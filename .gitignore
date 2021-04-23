@@ -1,0 +1,8 @@
+*.o
+*.hi
+*.errors
+*.log
+xmonad-x86_64-linux
+prompt-history
+dist-newstyle/
+dist/
