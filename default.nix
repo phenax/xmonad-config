@@ -1,9 +1,13 @@
 { nixpkgs ? import <nixpkgs> {} }:
 nixpkgs.stdenv.mkDerivation {
-  name = "ph-xmonad-config";
-  buildInputs = with nixpkgs;
-    [
-      pkg-config
-      cabal-install
-    ];
+  name = "xmonad-phenax-config";
+  buildInputs = with nixpkgs; [
+    pkg-config
+    stack
+    xorg.libXinerama
+    xorg.libX11
+    xorg.libXrandr
+    xorg.libXft
+    xorg.libXpm
+  ];
 }
