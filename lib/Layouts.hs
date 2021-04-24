@@ -21,6 +21,7 @@ import XMonad.Layout.Spacing
 import XMonad.Layout.SubLayouts
 import XMonad.Layout.SimplestFloat
 import XMonad.Hooks.ManageDocks (avoidStruts, docksEventHook, manageDocks, ToggleStruts(..))
+import XMonad.Layout.WindowNavigation (windowNavigation)
 
 import XMonad.Layout.WindowArranger (windowArrange, WindowArrangerMsg(..))
 
@@ -36,7 +37,7 @@ tall = withBorder C.borderSize
   . smartBorders
   . addGaps
   -- . addTabs shrinkText myTabTheme
-  -- . subLayout [] (smartBorders Simplest)
+  . subLayout [] (smartBorders Simplest)
   $ ResizableTall 1 (3/100) (1/2) []
 
 wide = withBorder C.borderSize
@@ -73,6 +74,7 @@ layoutHook = layoutModifiers $ defaultLayout
         . mouseResize
         . toggleLayouts monocle
         . windowArrange
+        . windowNavigation
         . mkToggle (NBFULL ?? NOBORDERS ?? EOT)
 
       defaultLayout =

@@ -46,7 +46,7 @@ main = do
               { ppOutput = hPutStrLn barProc,
                 ppCurrent = xmobarColor "#98be65" "" . wrap "[" "]",
                 ppTitle = xmobarColor "#b3afc2" "" . shorten 60,
-                ppHidden = xmobarColor "#82AAFF" "" . wrap "*" "",
+                ppHidden = xmobarColor "#82AAFF" "",
                 ppVisible = xmobarColor "#98be65" ""
               }
       }
