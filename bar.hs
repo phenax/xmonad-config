@@ -1,6 +1,6 @@
 Config
-  { font = "-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*"
-   , additionalFonts = []
+  { font = "xft:JetBrainsMono Nerd Font:size=8"
+   , additionalFonts = [ "xft:Font Awesome 5 Free:size=7", "xft:Symbols Nerd Font:size=7" ]
    , borderColor = "black"
    , border = TopB
    , bgColor = "black"
