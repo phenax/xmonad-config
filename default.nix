@@ -3,7 +3,10 @@ nixpkgs.stdenv.mkDerivation {
   name = "xmonad-phenax-config";
   buildInputs = with nixpkgs; [
     pkg-config
-    stack
+    #stack
+    cabal-install
+    xorg.libXext
+    xorg.libXScrnSaver
     xorg.libXinerama
     xorg.libX11
     xorg.libXrandr

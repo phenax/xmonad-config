@@ -1,0 +1,3 @@
+packages: .
+constraints:
+  xmobar +with_xft

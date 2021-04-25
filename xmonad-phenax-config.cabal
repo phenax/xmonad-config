@@ -1,22 +1,23 @@
-cabal-version: 1.12
-
--- This file has been generated from package.yaml by hpack version 0.34.4.
---
--- see: https://github.com/sol/hpack
+cabal-version: 2.2
 
 name:           xmonad-phenax-config
 version:        0.0.0
 license:        MIT
 build-type:     Simple
 
-executable xmonad
-  main-is: xmonad.hs
-  other-modules:
-      Paths_xmonad_phenax_config
+common common-def
   ghc-options: -Wdefault -Wextra -Wno-unused-do-bind -fwarn-tabs -threaded -O2 -with-rtsopts=-N4
-  build-depends:
-      X11
-    , base
+  build-depends: base
+    , X11
+    , process
+    , containers
+    , parsec
+    , xmobar
     , xmonad
     , xmonad-contrib
+
+executable bar
+  import: common-def
+  main-is: ../bar.hs
+  hs-source-dirs: lib
   default-language: Haskell2010
