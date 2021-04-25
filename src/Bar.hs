@@ -4,14 +4,12 @@ import qualified Lib.Theme as Theme
 import Xmobar
 
 main :: IO ()
-main = do
-  xres <- Theme.loadXres
-  xmobar $ config xres
+main = Theme.loadXres >>= xmobar . config
 
 config xres =
   let bg = Theme.background xres
       fg = Theme.foreground xres
-      accent = Theme.accent xres
+      --accent = Theme.accent xres
       danger = Theme.danger xres
    in defaultConfig
         { font = "xft:JetBrainsMono Nerd Font:size=8",

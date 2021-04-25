@@ -1,20 +1,17 @@
 module Lib.Keybindings where
 
 import qualified Lib.Config as C
-import qualified Lib.Layouts as L
 import qualified Lib.Scratchpads as NS
 import Lib.Utils
 import System.Exit (exitSuccess)
 import XMonad
 import XMonad.Actions.CopyWindow (kill1)
 import XMonad.Actions.WithAll (killAll)
-import XMonad.Layout (ChangeLayout (NextLayout))
 import XMonad.Layout.ResizableTile (MirrorResize (..))
 import XMonad.Layout.SubLayouts (GroupMsg (..), pullGroup)
 import XMonad.Layout.ToggleLayouts (ToggleLayout (..))
 import XMonad.Layout.WindowNavigation (Direction2D (..))
-import XMonad.Prompt.Shell (shellPrompt)
-import XMonad.StackSet (sink, swapMaster)
+import XMonad.StackSet (sink)
 
 keybindings =
   [ (modCtrl "q", io exitSuccess),

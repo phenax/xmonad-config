@@ -1,7 +1,5 @@
 module Main (main) where
 
-import Control.Concurrent (forkIO)
-import qualified Control.Exception.Extensible as E
 import Data.List (elemIndex)
 import Data.Maybe (fromMaybe)
 import qualified Lib.Config as C

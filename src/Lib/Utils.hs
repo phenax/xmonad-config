@@ -1,6 +1,5 @@
 module Lib.Utils where
 
-import Control.Monad.IO.Class (MonadIO)
 import qualified Lib.Config as C
 import XMonad
 import XMonad.Layout.Spacing

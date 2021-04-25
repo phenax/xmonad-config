@@ -4,7 +4,6 @@ module Lib.Scratchpads where
 
 import Lib.Utils
 import XMonad
-import XMonad.ManageHook
 import qualified XMonad.StackSet as W
 import XMonad.Util.NamedScratchpad
 
