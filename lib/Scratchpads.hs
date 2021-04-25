@@ -30,7 +30,7 @@ newTerminalNS (s, cmd, layout) = newNS (s, inTerm (show s) cmd, layout)
 
 scratchpads = map newTerminalNS
   [ (SystemMonitor, "gotop", Large)
-  , (Notes, "sensible-editor ~/dump/tmp-notes", Medium)
+  , (Notes, inEditor "~/dump/tmp-notes", Medium)
   ]
 
 scratchpad :: Scratchpad -> X ()

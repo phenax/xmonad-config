@@ -25,6 +25,8 @@ promptConfig = def
 
 terminal = "sensible-terminal"
 
+editor = "sensible-editor"
+
 browser = "sensible-browser"
 
 fileManager = "lf"

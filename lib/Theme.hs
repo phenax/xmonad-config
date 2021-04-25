@@ -22,6 +22,8 @@ accent = fromMaybe "#0cd" . M.lookup "*.accent"
 foreground :: XresValue
 foreground = fromMaybe "#fff" . M.lookup "*.foreground"
 
+danger :: XresValue
+danger = fromMaybe "#800" . M.lookup "*.color1"
 
 
 -- | Parsing

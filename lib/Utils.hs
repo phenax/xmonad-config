@@ -26,5 +26,7 @@ runExternal m = do
   installSignalHandlers
   return x
 
-inTerm cls cmd = (C.terminal ++ " -c " ++ cls ++ " -e " ++ cmd)
+inTerm cls cmd = C.terminal ++ " -c " ++ cls ++ " -e " ++ cmd
+inEditor file = C.editor ++ " " ++ file
+inGuiEditor cls = inTerm cls . inEditor
 

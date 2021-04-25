@@ -19,7 +19,7 @@ import Utils
 
 keybindings =
   [ (modCtrl "q", io exitSuccess)
-  , (modShift "r", spawn "sh -c 'xmonad --recompile && xmonad --restart'")
+  , (modShift "r", spawn "xmonad --recompile && xmonad --restart")
 
   -- Window management
   , (modAlt "h", sendMessage Shrink)
