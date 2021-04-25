@@ -46,6 +46,7 @@ keybindings =
   , (modCtrl "j", sendMessage $ pullGroup D)
 
   , (mod' "o", NS.scratchpad NS.SystemMonitor)
+  , (mod' "n", NS.scratchpad NS.Notes)
 
 
   -- Floating

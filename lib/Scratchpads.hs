@@ -1,3 +1,4 @@
+{-# LANGUAGE LambdaCase #-}
 module Scratchpads where
 
 import XMonad
@@ -7,20 +8,29 @@ import XMonad.Util.NamedScratchpad
 
 import Utils
 
-data Scratchpad = SystemMonitor | None
+data Scratchpad = SystemMonitor | Notes | None
 
 instance Show Scratchpad where
   show SystemMonitor = "sysmon"
+  show Notes = "notes"
   show None = ""
 
-newNS s cmd = NS n cmd (className =? n)
+data LayoutType = Small | Medium | Large
+
+getLayout = \case
+  Small -> customFloating $ W.RationalRect (1/4) (1/4) (1/2) (1/2)
+  Medium -> customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3)
+  Large -> customFloating $ W.RationalRect (1/10) (1/10) (4/5) (4/5)
+
+
+newNS (s, cmd, layout) = NS n cmd (className =? n) $ getLayout layout
   where n = show s
 
-newTerminalScratchpad s cmd = newNS s $ inTerm (show s) cmd
+newTerminalNS (s, cmd, layout) = newNS (s, inTerm (show s) cmd, layout)
 
-scratchpads =
-  [ newTerminalScratchpad SystemMonitor "gotop"
-      $ customFloating (W.RationalRect (1/6) (1/6) (2/3) (2/3))
+scratchpads = map newTerminalNS
+  [ (SystemMonitor, "gotop", Large)
+  , (Notes, "sensible-editor ~/dump/tmp-notes", Medium)
   ]
 
 scratchpad :: Scratchpad -> X ()
