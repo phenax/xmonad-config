@@ -5,7 +5,13 @@ import XMonad.Prompt (XPPosition (..))
 import qualified XMonad.Prompt as P
 
 -- | UI
-font = "xft:JetBrainsMono Nerd Font:size=8"
+fontFamily = "JetBrainsMono Nerd Font"
+
+font = "xft:" ++ fontFamily ++ ":size=8"
+
+fontBar = font
+
+altFonts = ["xft:Font Awesome 5 Free:size=7", "xft:Symbols Nerd Font:size=7"]
 
 -- | Keybindings
 modKey = mod4Mask
