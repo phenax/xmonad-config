@@ -29,12 +29,36 @@ config xres =
           iconRoot = ".",
           allDesktops = True,
           overrideRedirect = True,
+          template = "%StdinReader% }{  %default:Capture% %default:Master%  |  %bright%  |  %date%  |  %battery%  ",
           commands =
             [ Run StdinReader,
-              Run $ Date "%A, %e %b - %I:%M %p" "date" 10,
+              Run $ Date "\61463  %A, %e %b - %I:%M %p" "date" 10,
+              Run $
+                flip Brightness 30 $
+                  concat
+                    [ ["-t", "\61829  <percent>%"],
+                      ["--"],
+                      ["-D", "intel_backlight"]
+                    ],
+              Run $
+                flip (Volume "default" "Capture") 20 $
+                  concat
+                    [ ["-t", "<status>"],
+                      ["--"],
+                      ["--on", "[mic: \61744] "],
+                      ["--off", ""]
+                    ],
+              Run $
+                flip (Volume "default" "Master") 20 $
+                  concat
+                    [ ["-t", "<status> <volume>%"],
+                      ["--"],
+                      ["--on", "\61480"],
+                      ["--off", "\61478"]
+                    ],
               Run . flip Battery 50 $
                 concat
-                  [ ["--template", "<acstatus>"],
+                  [ ["--template", "\61457  <acstatus>"],
                     ["--Low", "20"],
                     ["--High", "80"],
                     ["--low", danger],
@@ -45,6 +69,5 @@ config xres =
                     ["-O", "<left>% Charging"],
                     ["-i", "<left>%"]
                   ]
-            ],
-          template = "%StdinReader% }{ %date% | %battery% "
+            ]
         }

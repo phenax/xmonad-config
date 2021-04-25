@@ -6,6 +6,9 @@ nixpkgs.stdenv.mkDerivation {
     haskellPackages.implicit-hie
     #stack
     cabal-install
+
+    # Libs
+    alsaLib
     xorg.libXext
     xorg.libXScrnSaver
     xorg.libXinerama
