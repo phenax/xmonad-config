@@ -11,9 +11,9 @@ import XMonad.Layout.WindowNavigation (Direction2D (..))
 import XMonad.Layout.ResizableTile (MirrorResize (..))
 import XMonad.Actions.CopyWindow (kill1)
 import XMonad.Actions.WithAll (killAll)
-import XMonad.Util.NamedScratchpad (namedScratchpadAction)
 
 import qualified Config as C
+import qualified Scratchpads as NS
 import qualified Layouts as L
 import Utils
 
@@ -44,6 +44,9 @@ keybindings =
   , (modCtrl "l", sendMessage $ pullGroup R)
   , (modCtrl "k", sendMessage $ pullGroup U)
   , (modCtrl "j", sendMessage $ pullGroup D)
+
+  , (mod' "o", NS.scratchpad NS.SystemMonitor)
+
 
   -- Floating
   , (mod' "l" +> shift "f", withFocused $ windows . sink)

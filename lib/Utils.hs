@@ -4,6 +4,8 @@ import XMonad
 import XMonad.Layout.Spacing
 import Control.Monad.IO.Class (MonadIO)
 
+import qualified Config as C
+
 mod' = ("M-" ++)
 ctrl = ("C-" ++)
 alt = ("M1-" ++)
@@ -23,4 +25,6 @@ runExternal m = do
   x <- m
   installSignalHandlers
   return x
+
+inTerm cls cmd = (C.terminal ++ " -c " ++ cls ++ " -e " ++ cmd)
 

@@ -14,6 +14,7 @@ import qualified Control.Exception.Extensible as E
 
 import qualified Config as C
 import Keybindings (keybindings)
+import Scratchpads (scratchpads)
 import qualified Layouts
 import Utils (runExternal)
 
@@ -25,6 +26,7 @@ myManageHook =
     [ className =? "Pidgin" --> doFloat
     , className =? "XCalc" --> doFloat
     ]
+  <+> namedScratchpadManageHook scratchpads
 
 getConfig barProc xres =
   let
@@ -39,7 +41,7 @@ getConfig barProc xres =
   , focusedBorderColor = accent
   , manageHook = myManageHook <+> manageHook desktopConfig
   , layoutHook = Layouts.layoutHook
-  , logHook = dynamicLogWithPP xmobarPP
+  , logHook = dynamicLogWithPP . namedScratchpadFilterOutWorkspacePP $ xmobarPP
     { ppOutput = hPutStrLn barProc
     , ppCurrent = xmobarColor accent "" . wrap "[" "]"
     , ppTitle = xmobarColor fg "" . shorten 60 -- Faded title

@@ -3,9 +3,6 @@ module Config where
 import XMonad
 import XMonad.Prompt (XPPosition (..))
 import qualified XMonad.Prompt as P
-import qualified XMonad.StackSet as W
-import XMonad.ManageHook
-import XMonad.Util.NamedScratchpad
 
 -- | UI
 
