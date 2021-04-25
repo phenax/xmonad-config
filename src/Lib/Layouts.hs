@@ -1,4 +1,4 @@
-module Layouts where
+module Lib.Layouts where
 
 import XMonad
 import XMonad.Layout.BinarySpacePartition (emptyBSP)
@@ -26,8 +26,8 @@ import XMonad.Layout.WindowNavigation (windowNavigation)
 
 import XMonad.Layout.WindowArranger (windowArrange, WindowArrangerMsg(..))
 
-import qualified Config as C
-import Utils
+import qualified Lib.Config as C
+import Lib.Utils
 
 myTabTheme = def { fontName            = C.font
                  , activeColor         = "#46d9ff"
