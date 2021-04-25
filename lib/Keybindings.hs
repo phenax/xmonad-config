@@ -22,35 +22,32 @@ keybindings =
   , (modShift "r", spawn "sh -c 'xmonad --recompile && xmonad --restart'")
 
   -- Window management
-  -- , (modAlt "m", windows swapMaster)
   , (modAlt "h", sendMessage Shrink)
   , (modAlt "l", sendMessage Expand)
   , (modAlt "j", sendMessage MirrorShrink)
   , (modAlt "k", sendMessage MirrorExpand)
   , (modShift "q", kill1)
   , (modCtrl "<Delete>", killAll)
-
   -- TODO: Add monitor key bindings
 
   -- Layout
   , (mod' "f", sendMessage $ Toggle "monocle")
-  , (mod' "l" +> "t", sendMessage $ Toggle "tall")
   , (mod' "=", sendMessage $ IncMasterN 1)
   , (mod' "-", sendMessage $ IncMasterN (-1))
+  , (mod' "l" +> "t", sendMessage $ Toggle "tall")
+  , (mod' "l" +> "f", sendMessage $ Toggle "floating")
+  , (mod' "l" +> shift "f", withFocused $ windows . sink)
 
   -- Sublayout
-  , (modCtrl "\\", withFocused (sendMessage . UnMergeAll))
+  , (modCtrl "\\", withFocused $ sendMessage . UnMergeAll)
   , (modCtrl "h", sendMessage $ pullGroup L)
   , (modCtrl "l", sendMessage $ pullGroup R)
   , (modCtrl "k", sendMessage $ pullGroup U)
   , (modCtrl "j", sendMessage $ pullGroup D)
 
+  -- Scratchpads
   , (mod' "o", NS.scratchpad NS.SystemMonitor)
   , (mod' "n", NS.scratchpad NS.Notes)
-
-
-  -- Floating
-  , (mod' "l" +> shift "f", withFocused $ windows . sink)
 
   -- Temporary
   , ("M-C-p", sendMessage NextLayout)

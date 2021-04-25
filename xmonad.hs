@@ -9,6 +9,8 @@ import XMonad.Util.EZConfig
 import XMonad.Util.Run (spawnPipe)
 import Control.Concurrent (forkIO)
 import XMonad.Util.NamedScratchpad
+import XMonad.Actions.SpawnOn
+import qualified XMonad.StackSet as W
 
 import qualified Control.Exception.Extensible as E
 
@@ -21,39 +23,46 @@ import Utils (runExternal)
 import qualified Theme
 
 myManageHook =
-  composeOne [ transience, isDialog -?> doCenterFloat ]
+  doF W.swapDown
+  <+> namedScratchpadManageHook scratchpads
   <+> composeAll
-    [ className =? "Pidgin" --> doFloat
+    [ isDialog --> doCenterFloat
+    , className =? "Pidgin" --> doFloat
     , className =? "XCalc" --> doFloat
     ]
-  <+> namedScratchpadManageHook scratchpads
 
 getConfig barProc xres =
   let
+    bg = Theme.background xres
     fg = Theme.foreground xres
     accent = Theme.accent xres
   in desktopConfig
   { modMask = C.modKey
   , terminal = C.terminal
   , workspaces = C.workspaces
+  , focusFollowsMouse = False
+  , clickJustFocuses = True
+
+  -- Border
   , borderWidth = C.borderSize
-  , normalBorderColor  = fg
+  , normalBorderColor  = bg
   , focusedBorderColor = accent
-  , manageHook = myManageHook <+> manageHook desktopConfig
+
+  -- Hooks
+  , manageHook = myManageHook <+> manageSpawn <+> manageHook desktopConfig
   , layoutHook = Layouts.layoutHook
-  , logHook = dynamicLogWithPP . namedScratchpadFilterOutWorkspacePP $ xmobarPP
-    { ppOutput = hPutStrLn barProc
-    , ppCurrent = xmobarColor accent "" . wrap "[" "]"
-    , ppTitle = xmobarColor fg "" . shorten 60 -- Faded title
-    , ppHidden = xmobarColor fg ""
-    , ppVisible = xmobarColor accent ""
-    }
+  , logHook =
+      dynamicLogWithPP . namedScratchpadFilterOutWorkspacePP $ xmobarPP
+        { ppOutput = hPutStrLn barProc
+        , ppCurrent = xmobarColor accent "" . wrap "[" "]"
+        , ppTitle = xmobarColor fg "" . shorten 60 -- Faded title
+        , ppHidden = xmobarColor fg ""
+        , ppVisible = xmobarColor accent ""
+        }
   } `additionalKeysP` keybindings
 
 main = do
   xres <- runExternal Theme.loadXres
-
   barProc <- spawnPipe "xmobar ~/.xmonad/bar.hs"
-
   xmonad $ getConfig barProc xres
 
