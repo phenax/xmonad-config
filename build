@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -e
+
+nix-shell default.nix --run './install.sh' &&
+  cp -f ./bin/window-manager "$1";
+

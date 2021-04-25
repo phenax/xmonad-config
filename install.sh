@@ -5,7 +5,11 @@ copy-bin() {
   cp $bin ./bin/;
 }
 
+rm ./bin/*;
 
+echo "Building...";
 cabal build && \
-  copy-bin bar;
+  echo "Copying binaries..." && \
+  copy-bin statusbar && \
+  copy-bin window-manager;
 

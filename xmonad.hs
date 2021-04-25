@@ -75,6 +75,6 @@ getConfig barProc xres =
 
 main = do
   xres <- runExternal Theme.loadXres
-  barProc <- spawnPipe "~/.xmonad/bin/bar"
+  barProc <- spawnPipe "~/.xmonad/bin/statusbar"
   xmonad $ getConfig barProc xres
 
