@@ -29,9 +29,9 @@ config xres =
           iconRoot = ".",
           allDesktops = True,
           overrideRedirect = True,
-          template = "%StdinReader% }{  %default:Capture% %default:Master%  |  %bright%  |  %date%  |  %battery%  ",
+          template = "%UnsafeStdinReader% }{  %default:Capture% %default:Master%  |  %bright%  |  %date%  |  %battery%  ",
           commands =
-            [ Run StdinReader,
+            [ Run UnsafeStdinReader,
               Run $ Date "\61463  %A, %e %b - %I:%M %p" "date" 10,
               Run $
                 flip Brightness 30 $

@@ -1,13 +1,11 @@
 module Main (main) where
 
-import Data.List (elemIndex)
-import Data.Maybe (fromMaybe)
 import qualified Lib.Config as C
 import Lib.Keybindings (keybindings)
 import qualified Lib.Layouts as Layouts
 import Lib.Scratchpads (scratchpads)
 import qualified Lib.Theme as Theme
-import Lib.Utils (runExternal)
+import Lib.Utils
 import System.IO (hPutStrLn)
 import XMonad
 import XMonad.Actions.SpawnOn
@@ -27,14 +25,6 @@ myManageHook =
         className =? "Pidgin" --> doFloat,
         className =? "XCalc" --> doFloat
       ]
-
-padding = wrap " " " "
-
-onClick fn ws = "<action=`" ++ fn ws ++ "`>" ++ ws ++ "</action>"
-
-viewWorkspace ws = "xdotool key super+" ++ show n
-  where
-    n = (+ 1) . fromMaybe 0 . elemIndex ws $ C.workspaces
 
 getConfig barProc xres =
   let bg = Theme.background xres
@@ -70,4 +60,8 @@ getConfig barProc xres =
 main = do
   xres <- runExternal Theme.loadXres
   barProc <- spawnPipe "~/.xmonad/bin/statusbar"
+  spawn "shotkey"
+  spawn "dunst -config ~/.config/dunst/dunstrc"
+  spawn "~/.fehbg"
+  -- spawn "~/scripts/battery-watch.sh start"
   xmonad $ getConfig barProc xres
