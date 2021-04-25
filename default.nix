@@ -3,6 +3,7 @@ nixpkgs.stdenv.mkDerivation {
   name = "xmonad-phenax-config";
   buildInputs = with nixpkgs; [
     pkg-config
+    haskellPackages.implicit-hie
     #stack
     cabal-install
     xorg.libXext

@@ -31,7 +31,7 @@ config xres =
           allDesktops = True,
           overrideRedirect = True,
           commands =
-            [ Run $ StdinReader,
+            [ Run StdinReader,
               Run $ Date "%A, %e %b - %I:%M %p" "date" 10,
               Run $
                 Battery

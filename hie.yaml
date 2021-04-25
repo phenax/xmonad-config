@@ -1,0 +1,10 @@
+cradle:
+  cabal:
+    - path: "./src"
+      component: "lib:xmonad-phenax-config"
+
+    - path: "./src/Bar.hs"
+      component: "xmonad-phenax-config:exe:statusbar"
+
+    - path: "./src/XmonadConfig.hs"
+      component: "xmonad-phenax-config:exe:window-manager"

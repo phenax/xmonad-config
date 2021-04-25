@@ -7,7 +7,8 @@ build-type:     Simple
 
 common common-def
   ghc-options: -Wdefault -Wextra -Wno-unused-do-bind -fwarn-tabs -threaded -O2 -with-rtsopts=-N4
-  build-depends: base
+  build-depends:
+      base
     , X11
     , process
     , containers
@@ -18,6 +19,16 @@ common common-def
     , extensible-exceptions
   hs-source-dirs: src
   default-language: Haskell2010
+
+library
+  import: common-def
+  exposed-modules:
+      Lib.Config
+    , Lib.Keybindings
+    , Lib.Layouts
+    , Lib.Scratchpads
+    , Lib.Theme
+    , Lib.Utils
 
 executable statusbar
   import: common-def
