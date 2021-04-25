@@ -11,6 +11,8 @@ import Control.Concurrent (forkIO)
 import XMonad.Util.NamedScratchpad
 import XMonad.Actions.SpawnOn
 import qualified XMonad.StackSet as W
+import Data.List (elemIndex)
+import Data.Maybe (fromMaybe)
 
 import qualified Control.Exception.Extensible as E
 
@@ -31,11 +33,20 @@ myManageHook =
     , className =? "XCalc" --> doFloat
     ]
 
+padding = wrap " " " "
+
+onClick fn ws = "<action=`" ++ fn ws ++ "`>" ++ ws ++ "</action>"
+
+viewWorkspace ws = "xdotool key super+" ++ show n
+  where
+    n = (+ 1) . fromMaybe 0 . elemIndex ws $ C.workspaces
+
 getConfig barProc xres =
   let
     bg = Theme.background xres
     fg = Theme.foreground xres
     accent = Theme.accent xres
+    danger = Theme.danger xres
   in desktopConfig
   { modMask = C.modKey
   , terminal = C.terminal
@@ -54,10 +65,11 @@ getConfig barProc xres =
   , logHook =
       dynamicLogWithPP . namedScratchpadFilterOutWorkspacePP $ xmobarPP
         { ppOutput = hPutStrLn barProc
-        , ppCurrent = xmobarColor accent "" . wrap "[" "]"
-        , ppTitle = xmobarColor fg "" . shorten 60 -- Faded title
-        , ppHidden = xmobarColor fg ""
-        , ppVisible = xmobarColor accent ""
+        , ppCurrent = xmobarColor fg accent . padding
+        , ppHidden = xmobarColor fg "" . padding . onClick viewWorkspace
+        , ppVisible = xmobarColor accent "" . padding . onClick viewWorkspace
+        , ppTitle = xmobarColor fg "" . shorten 60
+        , ppUrgent = xmobarColor danger "" . wrap "!" "!"
         }
   } `additionalKeysP` keybindings
 
