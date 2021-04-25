@@ -7,6 +7,7 @@ import XMonad.Layout.ToggleLayouts (ToggleLayout (..), toggleLayouts)
 import XMonad.Layout.ResizableTile (ResizableTall (..))
 import XMonad.Actions.MouseResize
 import XMonad.Layout.Accordion
+import XMonad.Layout.Tabbed
 
 import XMonad.Layout.LayoutModifier
 import XMonad.Layout.LimitWindows (limitWindows, increaseLimit, decreaseLimit)
@@ -26,17 +27,24 @@ import XMonad.Layout.WindowNavigation (windowNavigation)
 import XMonad.Layout.WindowArranger (windowArrange, WindowArrangerMsg(..))
 
 import qualified Config as C
+import Utils
 
-gaps i =
-  spacingRaw False (Border i i i i) True (Border i i i i) True
+myTabTheme = def { fontName            = C.font
+                 , activeColor         = "#46d9ff"
+                 , inactiveColor       = "#313846"
+                 , activeBorderColor   = "#46d9ff"
+                 , inactiveBorderColor = "#282c34"
+                 , activeTextColor     = "#282c34"
+                 , inactiveTextColor   = "#d0d0d0"
+                 }
 
-addGaps = gaps 2
+addGaps = gaps C.gaps
 
 tall = withBorder C.borderSize
   $ renamed [Replace "tall"]
   . smartBorders
   . addGaps
-  -- . addTabs shrinkText myTabTheme
+  . addTabs shrinkText myTabTheme
   . subLayout [] (smartBorders Simplest)
   $ ResizableTall 1 (3/100) (1/2) []
 

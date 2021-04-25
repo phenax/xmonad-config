@@ -5,10 +5,13 @@ import XMonad.Prompt.Shell (shellPrompt)
 import System.Exit (exitSuccess)
 import XMonad.Layout (ChangeLayout (NextLayout))
 import XMonad.Layout.ToggleLayouts (ToggleLayout (..))
-import XMonad.StackSet (focusMaster, sink)
+import XMonad.StackSet (swapMaster, sink)
 import XMonad.Layout.SubLayouts (pullGroup, GroupMsg (..))
 import XMonad.Layout.WindowNavigation (Direction2D (..))
 import XMonad.Layout.ResizableTile (MirrorResize (..))
+import XMonad.Actions.CopyWindow (kill1)
+import XMonad.Actions.WithAll (killAll)
+import XMonad.Util.NamedScratchpad (namedScratchpadAction)
 
 import qualified Config as C
 import qualified Layouts as L
@@ -19,11 +22,15 @@ keybindings =
   , (modShift "r", spawn "sh -c 'xmonad --recompile && xmonad --restart'")
 
   -- Window management
-  , (modAlt "m", windows focusMaster)
+  -- , (modAlt "m", windows swapMaster)
   , (modAlt "h", sendMessage Shrink)
   , (modAlt "l", sendMessage Expand)
   , (modAlt "j", sendMessage MirrorShrink)
   , (modAlt "k", sendMessage MirrorExpand)
+  , (modShift "q", kill1)
+  , (modCtrl "<Delete>", killAll)
+
+  -- TODO: Add monitor key bindings
 
   -- Layout
   , (mod' "f", sendMessage $ Toggle "monocle")

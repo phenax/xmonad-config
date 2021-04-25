@@ -1,13 +1,5 @@
---------------------------------------------------------------------------------
-
--- | Example.hs
---
--- Example configuration file for xmonad using the latest recommended
--- features (e.g., 'desktopConfig').
 module Main (main) where
 
---------------------------------------------------------------------------------
-import System.Exit
 import System.IO (hPutStrLn)
 import XMonad
 import XMonad.Config.Desktop
@@ -15,41 +7,51 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageHelpers
 import XMonad.Util.EZConfig
 import XMonad.Util.Run (spawnPipe)
+import Control.Concurrent (forkIO)
+import XMonad.Util.NamedScratchpad
+
+import qualified Control.Exception.Extensible as E
 
 import qualified Config as C
 import Keybindings (keybindings)
 import qualified Layouts
+import Utils (runExternal)
+
+import qualified Theme
 
 myManageHook =
-  composeOne
-    [ transience,
-      isDialog -?> doCenterFloat
+  composeOne [ transience, isDialog -?> doCenterFloat ]
+  <+> composeAll
+    [ className =? "Pidgin" --> doFloat
+    , className =? "XCalc" --> doFloat
     ]
-    <+> composeAll
-      [ className =? "Pidgin" --> doFloat,
-        className =? "XCalc" --> doFloat
-      ]
 
---------------------------------------------------------------------------------
+getConfig barProc xres =
+  let
+    fg = Theme.foreground xres
+    accent = Theme.accent xres
+  in desktopConfig
+  { modMask = C.modKey
+  , terminal = C.terminal
+  , workspaces = C.workspaces
+  , borderWidth = C.borderSize
+  , normalBorderColor  = fg
+  , focusedBorderColor = accent
+  , manageHook = myManageHook <+> manageHook desktopConfig
+  , layoutHook = Layouts.layoutHook
+  , logHook = dynamicLogWithPP xmobarPP
+    { ppOutput = hPutStrLn barProc
+    , ppCurrent = xmobarColor accent "" . wrap "[" "]"
+    , ppTitle = xmobarColor fg "" . shorten 60 -- Faded title
+    , ppHidden = xmobarColor fg ""
+    , ppVisible = xmobarColor accent ""
+    }
+  } `additionalKeysP` keybindings
+
 main = do
+  xres <- runExternal Theme.loadXres
+
   barProc <- spawnPipe "xmobar ~/.xmonad/bar.hs"
 
-  xmonad $
-    desktopConfig
-      { modMask = C.modKey,
-        manageHook = myManageHook <+> manageHook desktopConfig,
-        layoutHook = Layouts.layoutHook,
-        workspaces = C.workspaces,
-        logHook =
-          dynamicLogWithPP
-            xmobarPP
-              { ppOutput = hPutStrLn barProc,
-                ppCurrent = xmobarColor "#98be65" "" . wrap "[" "]",
-                ppTitle = xmobarColor "#b3afc2" "" . shorten 60,
-                ppHidden = xmobarColor "#82AAFF" "",
-                ppVisible = xmobarColor "#98be65" ""
-              }
-      }
-      `additionalKeysP` keybindings
+  xmonad $ getConfig barProc xres
 
---------------------------------------------------------------------------------

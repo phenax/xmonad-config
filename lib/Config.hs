@@ -1,17 +1,26 @@
 module Config where
 
 import XMonad
-import XMonad.Prompt
+import XMonad.Prompt (XPPosition (..))
+import qualified XMonad.Prompt as P
+import qualified XMonad.StackSet as W
+import XMonad.ManageHook
+import XMonad.Util.NamedScratchpad
+
+-- | UI
+
+font = "xft:JetBrainsMono Nerd Font:size=8"
+
 
 -- | Keybindings
 
 modKey = mod4Mask
 
 promptConfig = def
-  { position = Top,
-    alwaysHighlight = True,
-    promptBorderWidth = 0,
-    font = "xft:monospace:size=9"
+  { P.position = Top,
+    P.alwaysHighlight = True,
+    P.promptBorderWidth = 0,
+    P.font = font
   }
 
 
@@ -27,6 +36,8 @@ fileManager = "lf"
 -- | Windows/workspace
 
 borderSize = 2 :: Dimension
+
+gaps = 2 :: Integer
 
 workspaceCount = 9
 
