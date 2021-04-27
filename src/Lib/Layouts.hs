@@ -3,16 +3,19 @@ module Lib.Layouts where
 import qualified Lib.Config as C
 import qualified Lib.Theme as Theme
 import Lib.Utils
-import XMonad
+--import XMonad
+
+import XMonad hiding ((|||))
 import XMonad.Actions.MouseResize
 import XMonad.Hooks.ManageDocks (avoidStruts)
 import XMonad.Layout.Accordion
+import XMonad.Layout.LayoutCombinators
 import XMonad.Layout.MultiToggle (EOT (EOT), mkToggle, (??))
 import XMonad.Layout.MultiToggle.Instances (StdTransformers (NBFULL, NOBORDERS))
+import XMonad.Layout.Named (named)
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Renamed
 import XMonad.Layout.ResizableTile (ResizableTall (..))
-import XMonad.Layout.SimpleFloat
 import XMonad.Layout.Simplest
 import XMonad.Layout.SubLayouts
 import XMonad.Layout.Tabbed
@@ -37,8 +40,6 @@ wide =
       $ Mirror (ResizableTall 1 (3 / 100) 0.65 [])
 
 monocle = noBorders $ renamed [Replace "monocle"] Full
-
-floating = renamed [Replace "floating"] simpleFloat
 
 tallAccordion =
   withBorder C.borderSize $
@@ -81,9 +82,8 @@ layoutHook xres = layoutModifiers defaultLayout
         . mkToggle (NBFULL ?? NOBORDERS ?? EOT)
 
     defaultLayout =
-      tall
-        ||| wide
-        ||| monocle
-        ||| tallAccordion
-        ||| wideAccordion
-        ||| floating
+      named "tall" tall
+        ||| named "wide" wide
+        ||| named "monocle" monocle
+        ||| named "tallAccordion" tallAccordion
+        ||| named "wideAccordion" wideAccordion

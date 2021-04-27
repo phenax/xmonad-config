@@ -19,6 +19,7 @@ block = wrap "%" "%"
 
 (.|) a b = a ++ pad 1 1 sep ++ b
 
+-- TODO: Update on signal
 config xres =
   let bg = Theme.background xres
       fg = Theme.foreground xres

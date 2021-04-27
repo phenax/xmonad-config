@@ -8,11 +8,14 @@ import XMonad
 import XMonad.Actions.CopyWindow (kill1)
 import XMonad.Actions.CycleWS (toggleWS')
 import XMonad.Actions.WithAll (killAll)
+import XMonad.Layout.LayoutCombinators (JumpToLayout (..))
 import XMonad.Layout.ResizableTile (MirrorResize (..))
 import XMonad.Layout.SubLayouts (GroupMsg (..), pullGroup)
 import XMonad.Layout.ToggleLayouts (ToggleLayout (..))
 import XMonad.Layout.WindowNavigation (Direction2D (..))
 import XMonad.StackSet (sink)
+
+layoutPrefix = mod' "l"
 
 keybindings =
   [ (modCtrl "q", io exitSuccess),
@@ -31,12 +34,12 @@ keybindings =
     (mod' "f", sendMessage $ Toggle "monocle"),
     (mod' "=", sendMessage $ IncMasterN 1),
     (mod' "-", sendMessage $ IncMasterN (-1)),
-    (mod' "t", sendMessage $ Toggle "tall"),
-    (mod' "w", sendMessage $ Toggle "wide"),
-    (modShift "t", sendMessage $ Toggle "tallAccordion"),
-    (modShift "w", sendMessage $ Toggle "wideAccordion"),
-    (modShift "l" +> "f", sendMessage $ Toggle "floating"),
-    (modShift "l" +> shift "f", withFocused $ windows . sink),
+    (layoutPrefix +> "t", sendMessage $ JumpToLayout "tall"),
+    (layoutPrefix +> "w", sendMessage $ JumpToLayout "wide"), -- TODO: Fix set layout
+    (layoutPrefix +> shift "t", sendMessage $ JumpToLayout "tallAccordion"),
+    (layoutPrefix +> shift "w", sendMessage $ JumpToLayout "wideAccordion"),
+    -- (layoutPrefix +> "f", sendMessage $ JumpToLayout "floating"),
+    (layoutPrefix +> shift "f", withFocused $ windows . sink),
     -- Sublayout
     (modCtrl "\\", withFocused $ sendMessage . UnMergeAll),
     (modCtrl "h", sendMessage $ pullGroup L),
