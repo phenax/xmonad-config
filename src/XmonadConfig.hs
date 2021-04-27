@@ -1,11 +1,12 @@
 module Main (main) where
 
+import Control.Concurrent (forkIO)
 import qualified Lib.Config as C
-import Lib.Keybindings (keybindings)
+import Lib.Keybindings (keybindings, mousebindings)
 import qualified Lib.Layouts as Layouts
 import Lib.Scratchpads (scratchpads)
 import qualified Lib.Theme as Theme
-import Lib.Utils
+import Lib.Utils as Util
 import System.IO (hPutStrLn)
 import XMonad
 import XMonad.Actions.SpawnOn
@@ -31,6 +32,7 @@ getConfig barProc xres =
       fg = Theme.foreground xres
       accent = Theme.accent xres
       danger = Theme.danger xres
+      formatWS = Util.pad 2 2
    in desktopConfig
         { modMask = C.modKey,
           terminal = C.terminal,
@@ -43,25 +45,28 @@ getConfig barProc xres =
           focusedBorderColor = accent,
           -- Hooks
           manageHook = myManageHook <+> manageSpawn <+> manageHook desktopConfig,
-          layoutHook = Layouts.layoutHook,
+          layoutHook = Layouts.layoutHook xres,
           logHook =
             dynamicLogWithPP . namedScratchpadFilterOutWorkspacePP $
               xmobarPP
                 { ppOutput = hPutStrLn barProc,
-                  ppCurrent = xmobarColor fg accent . padding,
-                  ppHidden = xmobarColor fg "" . padding . onClick viewWorkspace,
-                  ppVisible = xmobarColor accent "" . padding . onClick viewWorkspace,
+                  ppCurrent = xmobarColor fg accent . formatWS,
+                  ppHidden = xmobarColor fg "" . formatWS . onClick viewWorkspace,
+                  ppVisible = xmobarColor accent "" . formatWS . onClick viewWorkspace,
                   ppTitle = xmobarColor fg "" . shorten 60,
                   ppUrgent = xmobarColor danger "" . wrap "!" "!"
                 }
         }
+        `removeKeysP` ["M-<Return>", "M-p", "M-S-p"]
         `additionalKeysP` keybindings
+        `additionalMouseBindings` mousebindings
 
 main = do
   xres <- runExternal Theme.loadXres
   barProc <- spawnPipe "~/.xmonad/bin/statusbar"
-  spawn "shotkey"
-  spawn "dunst -config ~/.config/dunst/dunstrc"
-  spawn "~/.fehbg"
+  --spawn "~/scripts/bin/with_zsh shotkey"
+  --spawn "dunst -config ~/.config/dunst/dunstrc"
+  --spawn "~/.fehbg"
   -- spawn "~/scripts/battery-watch.sh start"
+  spawn "zsh ~/nixos/packages/dwm/autostart.sh"
   xmonad $ getConfig barProc xres

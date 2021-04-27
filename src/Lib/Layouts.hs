@@ -1,6 +1,7 @@
 module Lib.Layouts where
 
 import qualified Lib.Config as C
+import qualified Lib.Theme as Theme
 import Lib.Utils
 import XMonad
 import XMonad.Actions.MouseResize
@@ -11,75 +12,71 @@ import XMonad.Layout.MultiToggle.Instances (StdTransformers (NBFULL, NOBORDERS))
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Renamed
 import XMonad.Layout.ResizableTile (ResizableTall (..))
+import XMonad.Layout.SimpleFloat
 import XMonad.Layout.Simplest
-import XMonad.Layout.SimplestFloat
 import XMonad.Layout.SubLayouts
 import XMonad.Layout.Tabbed
 import XMonad.Layout.ToggleLayouts (toggleLayouts)
 import XMonad.Layout.WindowArranger (windowArrange)
 import XMonad.Layout.WindowNavigation (windowNavigation)
 
-myTabTheme =
-  def
-    { fontName = C.font,
-      activeColor = "#46d9ff",
-      inactiveColor = "#313846",
-      activeBorderColor = "#46d9ff",
-      inactiveBorderColor = "#282c34",
-      activeTextColor = "#282c34",
-      inactiveTextColor = "#d0d0d0"
-    }
-
 addGaps = gaps C.gaps
 
 tall =
   withBorder C.borderSize $
     renamed [Replace "tall"]
-      . smartBorders
       . addGaps
-      . addTabs shrinkText myTabTheme
       . subLayout [] (smartBorders Simplest)
-      $ ResizableTall 1 (3 / 100) (1 / 2) []
+      $ ResizableTall 1 0 0.6 []
 
 wide =
   withBorder C.borderSize $
     renamed [Replace "wide"]
-      . smartBorders
       . addGaps
-      $ Mirror (ResizableTall 1 (3 / 100) (1 / 2) [])
+      . subLayout [] (smartBorders Simplest)
+      $ Mirror (ResizableTall 1 (3 / 100) 0.65 [])
 
-monocle =
-  noBorders $
-    renamed [Replace "monocle"]
-      . smartBorders
-      $ Full
+monocle = noBorders $ renamed [Replace "monocle"] Full
 
-floating =
-  renamed [Replace "floating"]
-    . smartBorders
-    $ simplestFloat
+floating = renamed [Replace "floating"] simpleFloat
 
 tallAccordion =
   withBorder C.borderSize $
     renamed [Replace "tallAccordion"]
-      . smartBorders
       . addGaps
+      . subLayout [] (smartBorders Simplest)
       $ Accordion
 
 wideAccordion =
   withBorder C.borderSize $
     renamed [Replace "wideAccordion"]
-      . smartBorders
       . addGaps
+      . subLayout [] (smartBorders Simplest)
       $ Mirror Accordion
 
-layoutHook = layoutModifiers defaultLayout
+layoutHook xres = layoutModifiers defaultLayout
   where
+    accent = Theme.accent xres
+    fg = Theme.foreground xres
+    bg = Theme.background xres
+    tabTheme =
+      def
+        { fontName = C.font,
+          activeColor = accent,
+          inactiveColor = bg,
+          activeBorderColor = accent,
+          inactiveBorderColor = bg,
+          activeTextColor = bg,
+          inactiveTextColor = fg
+        }
+
     layoutModifiers =
       avoidStruts
+        . addTabs shrinkText tabTheme
+        . smartBorders
         . mouseResize
-        . toggleLayouts monocle
         . windowArrange
+        . toggleLayouts monocle
         . windowNavigation
         . mkToggle (NBFULL ?? NOBORDERS ?? EOT)
 

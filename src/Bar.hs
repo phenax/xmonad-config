@@ -77,7 +77,7 @@ config xres =
               Run . flip Battery 50 $
                 concat
                   [ ["--template", onClick (const "~/scripts/powercontrol.sh menu") "\61457  <acstatus>"],
-                    ["--Low", "20"],
+                    ["--Low", "30"],
                     ["--High", "80"],
                     ["--low", danger],
                     ["--normal", safe],

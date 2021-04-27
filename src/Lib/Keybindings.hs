@@ -31,9 +31,12 @@ keybindings =
     (mod' "f", sendMessage $ Toggle "monocle"),
     (mod' "=", sendMessage $ IncMasterN 1),
     (mod' "-", sendMessage $ IncMasterN (-1)),
-    (mod' "l" +> "t", sendMessage $ Toggle "tall"),
-    (mod' "l" +> "f", sendMessage $ Toggle "floating"),
-    (mod' "l" +> shift "f", withFocused $ windows . sink),
+    (mod' "t", sendMessage $ Toggle "tall"),
+    (mod' "w", sendMessage $ Toggle "wide"),
+    (modShift "t", sendMessage $ Toggle "tallAccordion"),
+    (modShift "w", sendMessage $ Toggle "wideAccordion"),
+    (modShift "l" +> "f", sendMessage $ Toggle "floating"),
+    (modShift "l" +> shift "f", withFocused $ windows . sink),
     -- Sublayout
     (modCtrl "\\", withFocused $ sendMessage . UnMergeAll),
     (modCtrl "h", sendMessage $ pullGroup L),
@@ -45,6 +48,9 @@ keybindings =
     (mod' "n", NS.scratchpad NS.Notes),
     -- Temporary
     ("M-C-p", sendMessage NextLayout),
-    ("M-<Return>", spawn C.terminal), -- temporary
-    ("M-d", spawn "dmenu_run -i -p \"Run: \"")
+    ("M-S-<Return>", spawn C.terminal) -- temporary
+  ]
+
+mousebindings =
+  [ ((C.modKey .|. mod1Mask, button1), \w -> focus w >> mouseResizeWindow w)
   ]
