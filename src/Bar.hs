@@ -2,16 +2,29 @@ module Main where
 
 import qualified Lib.Config as C
 import qualified Lib.Theme as Theme
+import Lib.Utils
+import XMonad.Hooks.DynamicLog (wrap)
 import Xmobar
 
 main :: IO ()
 main = Theme.loadXres >>= xmobar . config
+
+gap = "}{"
+
+sep = "|"
+
+block = wrap "%" "%"
+
+(<==>) a b = a ++ gap ++ b
+
+(.|) a b = a ++ pad 1 1 sep ++ b
 
 config xres =
   let bg = Theme.background xres
       fg = Theme.foreground xres
       --accent = Theme.accent xres
       danger = Theme.danger xres
+      safe = "#ffffff"
    in defaultConfig
         { font = C.fontBar,
           additionalFonts = C.altFonts,
@@ -29,7 +42,12 @@ config xres =
           iconRoot = ".",
           allDesktops = True,
           overrideRedirect = True,
-          template = "%UnsafeStdinReader% }{  %default:Capture% %default:Master%  |  %bright%  |  %date%  |  %battery%  ",
+          template =
+            block "UnsafeStdinReader"
+              <==> block "default:Capture" ++ (pad 1 1 . block $ "default:Master")
+              .| (pad 1 1 . block $ "bright")
+              .| (pad 1 1 . block $ "date")
+              .| (pad 1 3 . block $ "battery"),
           commands =
             [ Run UnsafeStdinReader,
               Run $ Date "\61463  %A, %e %b - %I:%M %p" "date" 10,
@@ -53,17 +71,17 @@ config xres =
                   concat
                     [ ["-t", "<status> <volume>%"],
                       ["--"],
-                      ["--on", "\61480"],
-                      ["--off", "\61478"]
+                      ["--on", "\62559"],
+                      ["--off", "\61453"]
                     ],
               Run . flip Battery 50 $
                 concat
-                  [ ["--template", "\61457  <acstatus>"],
+                  [ ["--template", onClick (const "~/scripts/powercontrol.sh menu") "\61457  <acstatus>"],
                     ["--Low", "20"],
                     ["--High", "80"],
                     ["--low", danger],
-                    ["--normal", "darkorange"],
-                    ["--high", "darkgreen"],
+                    ["--normal", safe],
+                    ["--high", safe],
                     ["--"],
                     ["-o", "<left>%"], --  (<timeleft>)
                     ["-O", "<left>% Charging"],

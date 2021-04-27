@@ -4,7 +4,7 @@ import Data.List (elemIndex)
 import Data.Maybe (fromMaybe)
 import qualified Lib.Config as C
 import XMonad
-import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.DynamicLog (wrap)
 import XMonad.Layout.Spacing
 
 --
@@ -52,7 +52,9 @@ inGuiEditor cls = inTerm cls . inEditor
 --
 -- XMobar helpers
 --
-padding = wrap " " " "
+pad pStart pEnd = replicate pStart ' ' `wrap` replicate pEnd ' '
+
+padding = pad 1 1
 
 onClick fn ws = "<action=`" ++ fn ws ++ "`>" ++ ws ++ "</action>"
 
