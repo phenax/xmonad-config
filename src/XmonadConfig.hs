@@ -13,6 +13,7 @@ import XMonad.Actions.SpawnOn
 import XMonad.Config.Desktop
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageHelpers
+import qualified XMonad.Layout.Fullscreen as FS
 import qualified XMonad.StackSet as W
 import XMonad.Util.EZConfig
 import XMonad.Util.NamedScratchpad
@@ -26,6 +27,7 @@ myManageHook =
         className =? "Pidgin" --> doFloat,
         className =? "XCalc" --> doFloat
       ]
+    <+> FS.fullscreenManageHook
 
 getConfig barProc xres =
   let bg = Theme.background xres
@@ -44,8 +46,9 @@ getConfig barProc xres =
           normalBorderColor = bg,
           focusedBorderColor = accent,
           -- Hooks
+          handleEventHook = FS.fullscreenEventHook,
           manageHook = myManageHook <+> manageSpawn <+> manageHook desktopConfig,
-          layoutHook = Layouts.layoutHook xres,
+          layoutHook = FS.fullscreenFloat . FS.fullscreenFull $ Layouts.layoutHook xres,
           logHook =
             dynamicLogWithPP . namedScratchpadFilterOutWorkspacePP $
               xmobarPP
