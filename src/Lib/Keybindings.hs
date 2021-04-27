@@ -6,6 +6,7 @@ import Lib.Utils
 import System.Exit (exitSuccess)
 import XMonad
 import XMonad.Actions.CopyWindow (kill1)
+import XMonad.Actions.CycleWS (toggleWS')
 import XMonad.Actions.WithAll (killAll)
 import XMonad.Layout.ResizableTile (MirrorResize (..))
 import XMonad.Layout.SubLayouts (GroupMsg (..), pullGroup)
@@ -23,6 +24,7 @@ keybindings =
     (modAlt "k", sendMessage MirrorExpand),
     (modShift "q", kill1),
     (modCtrl "<Delete>", killAll),
+    (mod' "<Tab>", toggleWS' ["NSP"]),
     -- TODO: Add monitor key bindings
 
     -- Layout
