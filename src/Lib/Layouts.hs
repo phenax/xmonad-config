@@ -1,3 +1,5 @@
+{-# LANGUAGE FlexibleContexts #-}
+
 module Lib.Layouts where
 
 import qualified Lib.Config as C
@@ -5,11 +7,11 @@ import qualified Lib.Theme as Theme
 import Lib.Utils
 --import XMonad
 
-import XMonad hiding ((|||))
-import XMonad.Actions.MouseResize
+import XMonad
+import XMonad.Actions.MouseResize (mouseResize)
 import XMonad.Hooks.ManageDocks (avoidStruts)
 import XMonad.Layout.Accordion
-import XMonad.Layout.LayoutCombinators
+import qualified XMonad.Layout.Fullscreen as FS
 import XMonad.Layout.MultiToggle (EOT (EOT), mkToggle, (??))
 import XMonad.Layout.MultiToggle.Instances (StdTransformers (NBFULL, NOBORDERS))
 import XMonad.Layout.Named (named)
@@ -25,65 +27,63 @@ import XMonad.Layout.WindowNavigation (windowNavigation)
 
 addGaps = gaps C.gaps
 
-tall =
+layoutModifiers =
+  avoidStruts
+    . mouseResize
+    . windowArrange
+    . smartBorders
+    . windowNavigation
+    . toggleLayouts monocle
+    . FS.fullscreenFloat
+    . FS.fullscreenFull
+    . mkToggle (NBFULL ?? NOBORDERS ?? EOT)
+
+layoutHook xres =
+  layoutModifiers $
+    named "tall" (tall tabTheme)
+      ||| named "wide" (wide tabTheme)
+      ||| named "monocle" monocle
+      ||| named "tallAccordion" (tallAccordion tabTheme)
+      ||| named "wideAccordion" (wideAccordion tabTheme)
+  where
+    tabTheme = Theme.getTabTheme xres
+
+tall tabTheme =
   withBorder C.borderSize $
     renamed [Replace "tall"]
       . addGaps
+      . addTabs shrinkText tabTheme
       . subLayout [] (smartBorders Simplest)
-      $ ResizableTall 1 0 0.6 []
+      $ ResizableTall 1 resizeDiff masterSize []
+  where
+    masterSize = 0.6
+    resizeDiff = 3 / 100
 
-wide =
+wide tabTheme =
   withBorder C.borderSize $
     renamed [Replace "wide"]
       . addGaps
+      . addTabs shrinkText tabTheme
       . subLayout [] (smartBorders Simplest)
-      $ Mirror (ResizableTall 1 (3 / 100) 0.65 [])
+      $ Mirror (ResizableTall 1 resizeDiff masterSize [])
+  where
+    masterSize = 0.65
+    resizeDiff = 3 / 100
 
 monocle = noBorders $ renamed [Replace "monocle"] Full
 
-tallAccordion =
+tallAccordion tabTheme =
   withBorder C.borderSize $
     renamed [Replace "tallAccordion"]
       . addGaps
+      . addTabs shrinkText tabTheme
       . subLayout [] (smartBorders Simplest)
       $ Accordion
 
-wideAccordion =
+wideAccordion tabTheme =
   withBorder C.borderSize $
     renamed [Replace "wideAccordion"]
       . addGaps
+      . addTabs shrinkText tabTheme
       . subLayout [] (smartBorders Simplest)
       $ Mirror Accordion
-
-layoutHook xres = layoutModifiers defaultLayout
-  where
-    accent = Theme.accent xres
-    fg = Theme.foreground xres
-    bg = Theme.background xres
-    tabTheme =
-      def
-        { fontName = C.font,
-          activeColor = accent,
-          inactiveColor = bg,
-          activeBorderColor = accent,
-          inactiveBorderColor = bg,
-          activeTextColor = bg,
-          inactiveTextColor = fg
-        }
-
-    layoutModifiers =
-      mouseResize
-        . windowArrange
-        . windowNavigation
-        . mkToggle (NBFULL ?? NOBORDERS ?? EOT)
-        . smartBorders
-        . addTabs shrinkText tabTheme
-        . toggleLayouts monocle
-        . avoidStruts
-
-    defaultLayout =
-      named "tall" tall
-        ||| named "wide" wide
-        ||| named "monocle" monocle
-        ||| named "tallAccordion" tallAccordion
-        ||| named "wideAccordion" wideAccordion

@@ -4,8 +4,10 @@ import Data.Either (fromRight)
 import qualified Data.Map as M
 import Data.Maybe (fromMaybe)
 import GHC.IO.Exception (ExitCode)
+import qualified Lib.Config as C
 import System.Process
 import Text.Parsec
+import XMonad.Layout.Tabbed
 
 type Xres = M.Map String String
 
@@ -25,6 +27,20 @@ foreground = fromMaybe "#fff" . M.lookup "*.foreground"
 
 danger :: XresValue
 danger = fromMaybe "#800" . M.lookup "*.color1"
+
+getTabTheme xres =
+  let acc = accent xres
+      fg = foreground xres
+      bg = background xres
+   in def
+        { fontName = C.font,
+          activeColor = acc,
+          inactiveColor = bg,
+          activeBorderColor = acc,
+          inactiveBorderColor = bg,
+          activeTextColor = bg,
+          inactiveTextColor = fg
+        }
 
 -- | Parsing
 whitespace :: Parsec String u String
