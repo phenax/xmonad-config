@@ -21,7 +21,7 @@ replPrefix = mod' "r"
 
 -- TODO: Add monitor key bindings
 keybindings =
-  [ (modShift "r", spawn "xmonad --recompile && xmonad --restart"),
+  [ (modShift "r", restart "/home/imsohexy/.xmonad/bin/xmonad-wm" True),
     --
     -- Window management
     (modAlt "h", sendMessage Shrink),

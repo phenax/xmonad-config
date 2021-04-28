@@ -4,17 +4,19 @@ set -f;
 
 cabalArgs="-O2 --enable-executable-stripping";
 
+cbl() { nix-shell default.nix --run "cabal $*"; }
+
 copy-bin() {
-  local bin=$(cabal list-bin $1 $cabalArgs);
+  local bin=$(cbl list-bin $1 $cabalArgs);
   cp $bin ./bin/;
 }
 
-rm -f ./bin/*;
-mkdir -p ./bin/;
+rm -rf ./bin;
+mkdir -p ./bin;
 
 echo "Building...";
-cabal build $cabalArgs && \
+cbl build $cabalArgs && \
   echo "Copying binaries..." && \
-  copy-bin statusbar && \
-  copy-bin window-manager;
+  copy-bin xmobar && \
+  copy-bin xmonad-wm;
 

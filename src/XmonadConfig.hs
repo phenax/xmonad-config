@@ -24,13 +24,13 @@ import XMonad.Util.Run (spawnPipe)
 -- TODO: Add server mode (https://gist.github.com/czaplicki/37ab38da4245deaea8c86ceae3ff2fa2)
 main = do
   xres <- runExternal Theme.loadXres
-  barProc <- spawnPipe "~/.xmonad/xmobar"
+  barProc <- spawnPipe "~/.xmonad/bin/xmobar"
   --spawn "~/scripts/bin/with_zsh shotkey"
   --spawn "dunst -config ~/.config/dunst/dunstrc"
   --spawn "~/.fehbg"
   -- spawn "~/scripts/battery-watch.sh start"
   spawn "zsh ~/nixos/packages/dwm/autostart.sh"
-  xmonad $ getConfig barProc xres
+  launch $ getConfig barProc xres -- xmonad
 
 -- Manage hook
 myManageHook =
