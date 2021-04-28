@@ -3,5 +3,6 @@
 set -e
 
 nix-shell default.nix --run './install.sh' &&
-  cp -f ./bin/window-manager "$1";
+  cp -f ./bin/window-manager "$1" &&
+  cp -f ./bin/statusbar ~/.xmonad/xmobar;
 

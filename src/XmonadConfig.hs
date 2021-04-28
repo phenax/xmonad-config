@@ -1,6 +1,7 @@
 module Main (main) where
 
-import Control.Concurrent (forkIO)
+--import Control.Concurrent (forkIO, threadDelay)
+import Data.Semigroup (All (..))
 import qualified Lib.Config as C
 import Lib.Keybindings (keybindings, mousebindings)
 import qualified Lib.Layouts as Layouts
@@ -22,19 +23,19 @@ import XMonad.Util.Run (spawnPipe)
 myManageHook =
   doF W.swapDown
     <+> namedScratchpadManageHook scratchpads
+    <+> FS.fullscreenManageHook
     <+> composeAll
       [ isDialog --> doCenterFloat,
         className =? "Pidgin" --> doFloat,
         className =? "XCalc" --> doFloat
       ]
-    <+> FS.fullscreenManageHook
 
 getConfig barProc xres =
   let bg = Theme.background xres
       fg = Theme.foreground xres
       accent = Theme.accent xres
       danger = Theme.danger xres
-      formatWS = Util.pad 2 2
+      formatWS = Util.pad 1 1
    in desktopConfig
         { modMask = C.modKey,
           terminal = C.terminal,
@@ -64,9 +65,10 @@ getConfig barProc xres =
         `additionalKeysP` keybindings
         `additionalMouseBindings` mousebindings
 
+-- TODO: Autostart after xmonad
 main = do
   xres <- runExternal Theme.loadXres
-  barProc <- spawnPipe "~/.xmonad/bin/statusbar"
+  barProc <- spawnPipe "~/.xmonad/xmobar"
   --spawn "~/scripts/bin/with_zsh shotkey"
   --spawn "dunst -config ~/.config/dunst/dunstrc"
   --spawn "~/.fehbg"

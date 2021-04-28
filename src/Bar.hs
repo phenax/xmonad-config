@@ -7,7 +7,9 @@ import XMonad.Hooks.DynamicLog (wrap)
 import Xmobar
 
 main :: IO ()
-main = Theme.loadXres >>= xmobar . config
+main = do
+  xres <- Theme.loadXres
+  xmobar $ config xres
 
 gap = "}{"
 

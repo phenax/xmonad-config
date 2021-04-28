@@ -3,6 +3,7 @@
 *.errors
 *.log
 xmonad-x86_64-linux
+xmobar
 prompt-history
 dist-newstyle/
 dist/

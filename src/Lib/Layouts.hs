@@ -72,14 +72,14 @@ layoutHook xres = layoutModifiers defaultLayout
         }
 
     layoutModifiers =
-      avoidStruts
-        . addTabs shrinkText tabTheme
-        . smartBorders
-        . mouseResize
+      mouseResize
         . windowArrange
-        . toggleLayouts monocle
         . windowNavigation
         . mkToggle (NBFULL ?? NOBORDERS ?? EOT)
+        . smartBorders
+        . addTabs shrinkText tabTheme
+        . toggleLayouts monocle
+        . avoidStruts
 
     defaultLayout =
       named "tall" tall
