@@ -17,6 +17,8 @@ import XMonad.StackSet (sink)
 
 layoutPrefix = mod' "l"
 
+replPrefix = mod' "r"
+
 keybindings =
   [ (modCtrl "q", io exitSuccess),
     (modShift "r", spawn "xmonad --recompile && xmonad --restart"),
@@ -49,6 +51,8 @@ keybindings =
     -- Scratchpads
     (mod' "o", NS.scratchpad NS.SystemMonitor),
     (mod' "n", NS.scratchpad NS.Notes),
+    (replPrefix +> "n", NS.scratchpad $ NS.Repl NS.Js),
+    (replPrefix +> "h", NS.scratchpad $ NS.Repl NS.Haskell),
     -- Temporary
     ("M-C-p", sendMessage NextLayout),
     ("M-S-<Return>", spawn C.terminal) -- temporary

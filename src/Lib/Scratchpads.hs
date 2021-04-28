@@ -7,31 +7,42 @@ import XMonad
 import qualified XMonad.StackSet as W
 import XMonad.Util.NamedScratchpad
 
-data Scratchpad = SystemMonitor | Notes | None
+data ReplLang
+  = Js
+  | Haskell
+  deriving (Show)
 
-instance Show Scratchpad where
-  show SystemMonitor = "sysmon"
-  show Notes = "notes"
-  show None = ""
+data Scratchpad
+  = SystemMonitor
+  | Notes
+  | Repl ReplLang
+  | None
+  deriving (Show)
 
-data LayoutType = Small | Medium | Large
+data LayoutType
+  = Small
+  | Medium
+  | Large
 
 getLayout = \case
   Small -> customFloating $ W.RationalRect (1 / 4) (1 / 4) (1 / 2) (1 / 2)
   Medium -> customFloating $ W.RationalRect (1 / 6) (1 / 6) (2 / 3) (2 / 3)
   Large -> customFloating $ W.RationalRect (1 / 10) (1 / 10) (4 / 5) (4 / 5)
 
-newNS (s, cmd, layout) = NS n cmd (className =? n) $ getLayout layout
+newNS (s, cmd, layout) = NS cls cmd (className =? cls) $ getLayout layout
   where
-    n = show s
+    cls = show s
 
 newTerminalNS (s, cmd, layout) = newNS (s, inTerm (show s) cmd, layout)
 
+-- | List of scratchpads
 scratchpads =
   map
     newTerminalNS
     [ (SystemMonitor, "gotop", Large),
-      (Notes, inEditor "~/dump/tmp-notes", Medium)
+      (Notes, inEditor "~/dump/tmp-notes", Medium),
+      (Repl Js, "node", Small),
+      (Repl Haskell, "ghci", Small)
     ]
 
 scratchpad :: Scratchpad -> X ()
