@@ -25,9 +25,9 @@ foreground c s = "<fc=" ++ c ++ ">" ++ s ++ "</fc>"
 config xres =
   let bg = Theme.background xres
       fg = Theme.foreground xres
+      -- faded = Theme.faded xres
       -- accent = Theme.accent xres
       danger = Theme.danger xres
-      faded = Theme.faded xres
    in defaultConfig
         { font = C.fontBar,
           additionalFonts = C.altFonts,
@@ -55,7 +55,7 @@ config xres =
           commands =
             [ Run UnsafeStdinReader,
               Run $ Date "\61463  %A, %e %b - %I:%M %p" "date" 50,
-              Run $ Wireless "" ["-t", foreground faded "<ssid>" ++ ": <quality>%"] 50,
+              Run $ Wireless "" ["-t", "Wifi: <ssid>"] 50, -- ++ " <quality>%"
               Run $
                 flip Brightness 30 $
                   concat
