@@ -29,17 +29,17 @@ keybindings =
     (modAlt "j", sendMessage MirrorShrink),
     (modAlt "k", sendMessage MirrorExpand),
     (modShift "q", kill1),
-    (modCtrl "<Delete>", killAll),
     --
     -- Workspaces
     (mod' "<Tab>", toggleWS' ["NSP"]),
+    (modCtrl "<Delete>", killAll),
     --
     -- Layout
     (mod' "f", sendMessage $ Toggle "monocle"),
     (mod' "=", sendMessage $ IncMasterN 1),
     (mod' "-", sendMessage $ IncMasterN (-1)),
     (layoutPrefix +> "t", sendMessage $ JumpToLayout "tall"),
-    (layoutPrefix +> "w", sendMessage $ JumpToLayout "wide"), -- TODO: Fix set layout
+    (layoutPrefix +> "w", sendMessage $ JumpToLayout "wide"),
     (layoutPrefix +> shift "t", sendMessage $ JumpToLayout "tallAccordion"),
     (layoutPrefix +> shift "w", sendMessage $ JumpToLayout "wideAccordion"),
     -- (layoutPrefix +> "f", sendMessage $ JumpToLayout "floating"),

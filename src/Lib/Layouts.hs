@@ -5,16 +5,14 @@ module Lib.Layouts where
 import qualified Lib.Config as C
 import qualified Lib.Theme as Theme
 import Lib.Utils
---import XMonad
-
-import XMonad
+import XMonad hiding ((|||))
 import XMonad.Actions.MouseResize (mouseResize)
 import XMonad.Hooks.ManageDocks (avoidStruts)
 import XMonad.Layout.Accordion
 import qualified XMonad.Layout.Fullscreen as FS
+import XMonad.Layout.LayoutCombinators ((|||))
 import XMonad.Layout.MultiToggle (EOT (EOT), mkToggle, (??))
 import XMonad.Layout.MultiToggle.Instances (StdTransformers (NBFULL, NOBORDERS))
-import XMonad.Layout.Named (named)
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Renamed
 import XMonad.Layout.ResizableTile (ResizableTall (..))
@@ -40,11 +38,11 @@ layoutModifiers =
 
 layoutHook xres =
   layoutModifiers $
-    named "tall" (tall tabTheme)
-      ||| named "wide" (wide tabTheme)
-      ||| named "monocle" monocle
-      ||| named "tallAccordion" (tallAccordion tabTheme)
-      ||| named "wideAccordion" (wideAccordion tabTheme)
+    tall tabTheme
+      ||| wide tabTheme
+      ||| monocle
+      ||| tallAccordion tabTheme
+      ||| wideAccordion tabTheme
   where
     tabTheme = Theme.getTabTheme xres
 
@@ -54,8 +52,9 @@ tall tabTheme =
       . addGaps
       . addTabs shrinkText tabTheme
       . subLayout [] (smartBorders Simplest)
-      $ ResizableTall 1 resizeDiff masterSize []
+      $ ResizableTall nmaster resizeDiff masterSize []
   where
+    nmaster = 1
     masterSize = 0.6
     resizeDiff = 3 / 100
 
@@ -65,8 +64,9 @@ wide tabTheme =
       . addGaps
       . addTabs shrinkText tabTheme
       . subLayout [] (smartBorders Simplest)
-      $ Mirror (ResizableTall 1 resizeDiff masterSize [])
+      $ Mirror (ResizableTall nmaster resizeDiff masterSize [])
   where
+    nmaster = 1
     masterSize = 0.65
     resizeDiff = 3 / 100
 
