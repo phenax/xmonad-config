@@ -5,7 +5,7 @@ import qualified Data.Map as M
 import Data.Maybe (fromMaybe)
 import GHC.IO.Exception (ExitCode)
 import qualified Lib.Config as C
-import System.Process
+import System.Process (readProcessWithExitCode)
 import Text.Parsec
 import XMonad.Layout.Tabbed
 
@@ -16,17 +16,23 @@ type XresValue = Xres -> String
 emptyXres :: Xres
 emptyXres = M.empty
 
+getXVal :: String -> String -> Xres -> String
+getXVal k def = fromMaybe def . M.lookup k
+
 background :: XresValue
-background = fromMaybe "#000" . M.lookup "*.background"
+background = getXVal "*.background" "#000"
 
 accent :: XresValue
-accent = fromMaybe "#0cd" . M.lookup "*.accent"
+accent = getXVal "*.accent" "#0cd"
 
 foreground :: XresValue
-foreground = fromMaybe "#fff" . M.lookup "*.foreground"
+foreground = getXVal "*.foreground" "#fff"
+
+faded :: XresValue
+faded = getXVal "*.color8" "#888"
 
 danger :: XresValue
-danger = fromMaybe "#800" . M.lookup "*.color1"
+danger = getXVal "*.color1" "#800"
 
 getTabTheme xres =
   let acc = accent xres

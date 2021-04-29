@@ -11,23 +11,23 @@ main = do
   xres <- Theme.loadXres
   xmobar $ config xres
 
-gap = "}{"
-
 sep = "|"
 
 block = wrap "%" "%"
 
-(<==>) a b = a ++ gap ++ b
+(<==>) a b = a ++ "}{" ++ b
 
 (.|) a b = a ++ pad 1 1 sep ++ b
+
+foreground c s = "<fc=" ++ c ++ ">" ++ s ++ "</fc>"
 
 -- TODO: Update on signal
 config xres =
   let bg = Theme.background xres
       fg = Theme.foreground xres
-      --accent = Theme.accent xres
+      -- accent = Theme.accent xres
       danger = Theme.danger xres
-      safe = "#ffffff"
+      faded = Theme.faded xres
    in defaultConfig
         { font = C.fontBar,
           additionalFonts = C.altFonts,
@@ -50,10 +50,12 @@ config xres =
               <==> block "default:Capture" ++ (pad 1 1 . block $ "default:Master")
               .| (pad 1 1 . block $ "bright")
               .| (pad 1 1 . block $ "date")
+              .| (pad 1 1 . block $ "wi")
               .| (pad 1 3 . block $ "battery"),
           commands =
             [ Run UnsafeStdinReader,
-              Run $ Date "\61463  %A, %e %b - %I:%M %p" "date" 10,
+              Run $ Date "\61463  %A, %e %b - %I:%M %p" "date" 50,
+              Run $ Wireless "" ["-t", foreground faded "<ssid>" ++ ": <quality>%"] 50,
               Run $
                 flip Brightness 30 $
                   concat
@@ -62,7 +64,7 @@ config xres =
                       ["-D", "intel_backlight"]
                     ],
               Run $
-                flip (Volume "default" "Capture") 20 $
+                flip (Volume "default" "Capture") 10 $
                   concat
                     [ ["-t", "<status>"],
                       ["--"],
@@ -70,7 +72,7 @@ config xres =
                       ["--off", ""]
                     ],
               Run $
-                flip (Volume "default" "Master") 20 $
+                flip (Volume "default" "Master") 10 $
                   concat
                     [ ["-t", "<status> <volume>%"],
                       ["--"],
@@ -83,8 +85,8 @@ config xres =
                     ["--Low", "30"],
                     ["--High", "80"],
                     ["--low", danger],
-                    ["--normal", safe],
-                    ["--high", safe],
+                    ["--normal", fg],
+                    ["--high", fg],
                     ["--"],
                     ["-o", "<left>%"], --  (<timeleft>)
                     ["-O", "<left>% Charging"],

@@ -11,6 +11,7 @@ copy-bin() {
   cp $bin ./bin/;
 }
 
+rm -rf ./dist-newstyle;
 rm -rf ./bin;
 mkdir -p ./bin;
 

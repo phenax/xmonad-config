@@ -2,4 +2,4 @@ packages: .
 optimization: True
 
 constraints:
-  xmobar +with_xft +with_threaded +with_rtsopts +with_alsa +with_utf8
+  xmobar +with_xft +with_threaded +with_rtsopts +with_alsa +with_utf8 +with_nl80211

@@ -24,7 +24,7 @@ browser = "sensible-browser"
 fileManager = "lf"
 
 -- | Windows/workspace
-borderSize = 2 :: Dimension
+borderSize = 3 :: Dimension
 
 gaps = 2 :: Integer
 

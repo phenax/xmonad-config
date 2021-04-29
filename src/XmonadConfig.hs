@@ -74,7 +74,7 @@ getConfig barProc xres =
                   ppHidden = xmobarColor fg "" . formatWS . onClick viewWorkspace,
                   ppVisible = xmobarColor accent "" . formatWS . onClick viewWorkspace,
                   ppTitle = xmobarColor fg "" . shorten 60,
-                  ppUrgent = xmobarColor danger "" . wrap "!" "!"
+                  ppUrgent = xmobarColor danger "" . wrap "[" "]"
                 }
         }
         `removeKeysP` ["M-<Return>", "M-p", "M-S-p"]
