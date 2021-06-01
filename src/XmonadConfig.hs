@@ -77,6 +77,6 @@ getConfig barProc xres =
                   ppUrgent = xmobarColor danger "" . wrap "[" "]"
                 }
         }
-        `removeKeysP` ["M-<Return>", "M-p", "M-S-p"]
+        `removeKeysP` ["M-<Return>", "M-p", "M-S-p", "M-S-c"]
         `additionalKeysP` keybindings
         `additionalMouseBindings` mousebindings

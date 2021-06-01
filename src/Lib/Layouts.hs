@@ -78,7 +78,7 @@ tallAccordion tabTheme =
       . addGaps
       . addTabs shrinkText tabTheme
       . subLayout [] (smartBorders Simplest)
-      $ Accordion
+      $ Mirror Accordion
 
 wideAccordion tabTheme =
   withBorder C.borderSize $
@@ -86,4 +86,4 @@ wideAccordion tabTheme =
       . addGaps
       . addTabs shrinkText tabTheme
       . subLayout [] (smartBorders Simplest)
-      $ Mirror Accordion
+      $ Accordion
