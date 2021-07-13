@@ -10,11 +10,13 @@ import XMonad.Util.NamedScratchpad
 data ReplLang
   = Js
   | Haskell
+  | RateSx
   deriving (Show)
 
 data Scratchpad
   = SystemMonitor
   | Notes
+  | Terminal
   | Repl ReplLang
   | None
   deriving (Show)
@@ -40,8 +42,10 @@ scratchpads =
   map
     newTerminalNS
     [ (SystemMonitor, "gotop", Large),
-      (Notes, inEditor "~/dump/tmp-notes", Medium),
+      (Notes, inEditor "~/nixos/extras/notes/index.md", Large),
+      (Terminal, "zsh", Medium),
       (Repl Js, "node", Small),
+      (Repl RateSx, "~/scripts/rate-sx.sh", Medium),
       (Repl Haskell, "ghci", Small)
     ]
 
