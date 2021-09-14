@@ -57,14 +57,14 @@ config xres =
               Run $ Date "\61463  %A, %e %b - %I:%M %p" "date" 50,
               Run $ Wireless "" ["-t", "Wifi: <ssid>"] 50, -- ++ " <quality>%"
               Run $
-                flip Brightness 30 $
+                flip Brightness 50 $
                   concat
                     [ ["-t", "\61829  <percent>%"],
                       ["--"],
                       ["-D", "intel_backlight"]
                     ],
               Run $
-                flip (Volume "default" "Capture") 10 $
+                flip (Volume "default" "Capture") 20 $
                   concat
                     [ ["-t", "<status>"],
                       ["--"],
@@ -72,7 +72,7 @@ config xres =
                       ["--off", ""]
                     ],
               Run $
-                flip (Volume "default" "Master") 10 $
+                flip (Volume "default" "Master") 20 $
                   concat
                     [ ["-t", "<status> <volume>%"],
                       ["--"],

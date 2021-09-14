@@ -43,11 +43,11 @@ runExternal m = do
   installSignalHandlers
   return x
 
-inTerm cls cmd = C.terminal ++ " -c '" ++ cls ++ "' -e " ++ cmd
+inTerm cls cwd cmd = C.terminal ++ " -c '" ++ cls ++ "' -d " ++ cwd ++ " -e " ++ cmd
 
 inEditor file = C.editor ++ " " ++ file
 
-inGuiEditor cls = inTerm cls . inEditor
+--inGuiEditor cls = inTerm cls . inEditor
 
 --
 -- XMobar helpers

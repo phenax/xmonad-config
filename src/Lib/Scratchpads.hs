@@ -18,6 +18,7 @@ data Scratchpad
   | Notes
   | Terminal
   | Repl ReplLang
+  | Calendar
   | None
   deriving (Show)
 
@@ -35,18 +36,19 @@ newNS (s, cmd, layout) = NS cls cmd (className =? cls) $ getLayout layout
   where
     cls = show s
 
-newTerminalNS (s, cmd, layout) = newNS (s, inTerm (show s) cmd, layout)
+newTerminalNS (s, cmd, layout, cwd) = newNS (s, inTerm (show s) cwd cmd, layout)
 
 -- | List of scratchpads
 scratchpads =
   map
     newTerminalNS
-    [ (SystemMonitor, "gotop", Large),
-      (Notes, inEditor "~/nixos/extras/notes/index.md", Large),
-      (Terminal, "zsh", Medium),
-      (Repl Js, "node", Small),
-      (Repl RateSx, "~/scripts/rate-sx.sh", Medium),
-      (Repl Haskell, "ghci", Small)
+    [ (SystemMonitor, "gotop", Large, "~"),
+      (Notes, inEditor "~/nixos/extras/notes/index.md", Large, "~/nixos/extras/notes"),
+      (Terminal, "zsh", Medium, "~"),
+      (Calendar, "wyrd", Medium, "~"),
+      (Repl Js, "node", Small, "~"),
+      (Repl RateSx, "~/scripts/rate-sx.sh", Medium, "~"),
+      (Repl Haskell, "ghci", Small, "~")
     ]
 
 scratchpad :: Scratchpad -> X ()

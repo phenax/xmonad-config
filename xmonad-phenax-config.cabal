@@ -34,6 +34,6 @@ executable xmobar
   import: common-def
   main-is: ./Bar.hs
 
-executable xmonad-wm
+executable xmonad
   import: common-def
   main-is: ./XmonadConfig.hs

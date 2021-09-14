@@ -21,7 +21,7 @@ replPrefix = mod' "r"
 
 -- TODO: Add monitor key bindings
 keybindings =
-  [ (modShift "r", restart "/home/imsohexy/.xmonad/bin/xmonad-wm" True),
+  [ (modShift "r", restart "xmonad" True),
     --
     -- Window management
     (modAlt "h", sendMessage Shrink),
@@ -53,17 +53,18 @@ keybindings =
     (modCtrl "j", sendMessage $ pullGroup D),
     --
     -- Scratchpads
+    (mod' "s", NS.scratchpad NS.Calendar),
     (mod' "o", NS.scratchpad NS.SystemMonitor),
     (mod' "n", NS.scratchpad NS.Notes),
     (mod' "t", NS.scratchpad NS.Terminal),
     (replPrefix +> "n", NS.scratchpad $ NS.Repl NS.Js),
     (replPrefix +> "r", NS.scratchpad $ NS.Repl NS.RateSx),
-    (replPrefix +> "h", NS.scratchpad $ NS.Repl NS.Haskell),
+    (replPrefix +> "h", NS.scratchpad $ NS.Repl NS.Haskell)
     --
     -- Temporary
-    (modCtrl "q", io exitSuccess),
-    ("M-C-p", sendMessage NextLayout),
-    ("M-S-<Return>", spawn C.terminal) -- temporary
+    -- (modCtrl "q", io exitSuccess),
+    -- ("M-C-p", sendMessage NextLayout),
+    -- ("M-S-<Return>", spawn C.terminal) -- temporary
   ]
 
 mousebindings =

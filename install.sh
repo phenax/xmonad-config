@@ -12,7 +12,7 @@ copy-bin() {
 }
 
 rm -rf ./dist-newstyle;
-rm -rf ./bin;
+
 mkdir -p ./bin;
 
 echo "Building...";

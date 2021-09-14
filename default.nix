@@ -1,13 +1,14 @@
 { nixpkgs ? import <nixpkgs> {} }:
+with nixpkgs;
 nixpkgs.stdenv.mkDerivation {
   name = "xmonad-phenax-config";
-  buildInputs = with nixpkgs; [
+  buildInputs = [
     pkg-config
     haskellPackages.implicit-hie
-    #stack
     cabal-install
 
     # Libs
+    libclang
     alsaLib
     xorg.libXext
     xorg.libXScrnSaver
@@ -17,4 +18,7 @@ nixpkgs.stdenv.mkDerivation {
     xorg.libXft
     xorg.libXpm
   ];
+  nativeBuildInputs = [ clang ];
+
+  LIBCLANG_PATH = "${libclang.lib}/lib";
 }
