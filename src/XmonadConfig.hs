@@ -14,6 +14,7 @@ import XMonad.Config.Desktop
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks (docksEventHook, manageDocks)
 import XMonad.Hooks.ManageHelpers
+import XMonad.Hooks.RefocusLast
 import qualified XMonad.Layout.Fullscreen as FS
 import qualified XMonad.StackSet as W
 import XMonad.Util.EZConfig
@@ -52,6 +53,17 @@ getConfig barProc xres =
       accent = Theme.accent xres
       danger = Theme.danger xres
       formatWS = Util.pad 1 1
+      refocusPred = refocusingIsActive <||> isFloat
+      logHook =
+        dynamicLogWithPP . namedScratchpadFilterOutWorkspacePP $
+          xmobarPP
+            { ppOutput = hPutStrLn barProc,
+              ppCurrent = xmobarColor fg accent . formatWS,
+              ppHidden = xmobarColor fg "" . formatWS . onClick viewWorkspace,
+              ppVisible = xmobarColor accent "" . formatWS . onClick viewWorkspace,
+              ppTitle = xmobarColor fg "" . shorten 60,
+              ppUrgent = xmobarColor danger "" . wrap "[" "]"
+            }
    in desktopConfig
         { modMask = C.modKey,
           terminal = C.terminal,
@@ -63,19 +75,10 @@ getConfig barProc xres =
           normalBorderColor = bg,
           focusedBorderColor = accent,
           -- Hooks
-          handleEventHook = docksEventHook <+> FS.fullscreenEventHook,
+          handleEventHook = refocusLastWhen refocusPred <+> docksEventHook <+> FS.fullscreenEventHook,
           manageHook = myManageHook,
-          layoutHook = Layouts.layoutHook xres,
-          logHook =
-            dynamicLogWithPP . namedScratchpadFilterOutWorkspacePP $
-              xmobarPP
-                { ppOutput = hPutStrLn barProc,
-                  ppCurrent = xmobarColor fg accent . formatWS,
-                  ppHidden = xmobarColor fg "" . formatWS . onClick viewWorkspace,
-                  ppVisible = xmobarColor accent "" . formatWS . onClick viewWorkspace,
-                  ppTitle = xmobarColor fg "" . shorten 60,
-                  ppUrgent = xmobarColor danger "" . wrap "[" "]"
-                }
+          layoutHook = refocusLastLayoutHook $ Layouts.layoutHook xres,
+          logHook = refocusLastLogHook <+> logHook
         }
         `removeKeysP` ["M-<Return>", "M-p", "M-S-p", "M-S-c"]
         `additionalKeysP` keybindings

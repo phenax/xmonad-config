@@ -1,10 +1,11 @@
-{ nixpkgs ? import <nixpkgs> {} }:
+{ nixpkgs ? import <nixpkgs> { } }:
 with nixpkgs;
 nixpkgs.stdenv.mkDerivation {
   name = "xmonad-phenax-config";
   buildInputs = [
     pkg-config
     haskellPackages.implicit-hie
+    haskellPackages.haskell-language-server
     cabal-install
 
     # Libs
