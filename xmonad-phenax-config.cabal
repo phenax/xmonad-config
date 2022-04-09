@@ -13,9 +13,9 @@ common common-def
     , process
     , containers
     , parsec
-    , xmobar
-    , xmonad
-    , xmonad-contrib
+    , xmobar <= 0.42
+    , xmonad <= 0.17.0
+    , xmonad-contrib <= 0.17.0
     , extensible-exceptions
   hs-source-dirs: src
   default-language: Haskell2010

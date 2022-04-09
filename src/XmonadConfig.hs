@@ -31,7 +31,8 @@ main = do
   --spawn "~/.fehbg"
   -- spawn "~/scripts/battery-watch.sh start"
   spawn "zsh ~/nixos/packages/xmonad/autostart.sh"
-  launch $ getConfig barProc xres -- xmonad
+  dirs <- getDirectories
+  launch (getConfig barProc xres) dirs
 
 -- Manage hook
 myManageHook =
