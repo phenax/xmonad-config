@@ -43,7 +43,7 @@ scratchpads =
   map
     newTerminalNS
     [ (SystemMonitor, "gotop", Large, "~"),
-      (Notes, inEditor "~/nixos/extras/notes/index.md", Large, "~/nixos/extras/notes"),
+      (Notes, inEditor "~/nixos/extras/notes/index.norg", Large, "~/nixos/extras/notes"),
       (Terminal, "zsh", Medium, "~"),
       (Calendar, "wyrd", Medium, "~"),
       (Repl Js, "node", Small, "~"),
