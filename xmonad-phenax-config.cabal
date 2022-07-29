@@ -13,7 +13,7 @@ common common-def
     , process
     , containers
     , parsec
-    , xmobar <= 0.43
+    , xmobar <= 0.44.1
     , xmonad <= 0.17.0
     , xmonad-contrib <= 0.17.0
     , extensible-exceptions

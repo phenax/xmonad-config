@@ -30,6 +30,7 @@ main = do
   --spawn "dunst -config ~/.config/dunst/dunstrc"
   --spawn "~/.fehbg"
   -- spawn "~/scripts/battery-watch.sh start"
+  spawn "zsh ~/nixos/scripts/monitor.sh sidekick" -- Configure sidekick monitor
   spawn "zsh ~/nixos/packages/xmonad/autostart.sh"
   dirs <- getDirectories
   launch (getConfig barProc xres) dirs
