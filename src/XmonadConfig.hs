@@ -84,4 +84,4 @@ getConfig barProc xres =
         }
         `removeKeysP` ["M-<Return>", "M-p", "M-S-p", "M-S-c"]
         `additionalKeysP` keybindings
-        `additionalMouseBindings` mousebindings
+        `mouseBindings` mousebindings
