@@ -14,6 +14,9 @@ import XMonad.Layout.SubLayouts (GroupMsg (..), pullGroup)
 import XMonad.Layout.ToggleLayouts (ToggleLayout (..))
 import XMonad.Layout.WindowNavigation (Direction2D (..))
 import XMonad.StackSet (sink)
+import XMonad.Actions.OnScreen (viewOnScreen)
+import qualified XMonad.StackSet as W
+import qualified Lib.Config as C
 
 layoutPrefix = mod' "l"
 
@@ -34,14 +37,25 @@ keybindings =
     (mod' "<Tab>", toggleWS' ["NSP"]),
     (modCtrl "<Delete>", killAll),
     --
+    -- Sidekick monitor
+    (mod' ".",
+      do
+        let
+          doIt (Just wid) = windows $ W.view wid
+          doIt Nothing = pure ()
+        screenWorkspace 0 >>= doIt
+    ),
+    (mod' ",", windows (viewOnScreen 1 (C.workspaces !! 8))),
+    -- (mod' ".", windows (viewOnScreen 0 "1")),
+    --
     -- Layout
     (mod' "f", sendMessage $ Toggle "monocle"),
     (mod' "=", sendMessage $ IncMasterN 1),
     (mod' "-", sendMessage $ IncMasterN (-1)),
     (layoutPrefix +> "t", sendMessage $ JumpToLayout "tall"),
     (layoutPrefix +> "w", sendMessage $ JumpToLayout "wide"),
-    (layoutPrefix +> shift "t", sendMessage $ JumpToLayout "tallAccordion"),
-    (layoutPrefix +> shift "w", sendMessage $ JumpToLayout "wideAccordion"),
+    -- (layoutPrefix +> shift "t", sendMessage $ JumpToLayout "tallAccordion"),
+    -- (layoutPrefix +> shift "w", sendMessage $ JumpToLayout "wideAccordion"),
     -- (layoutPrefix +> "f", sendMessage $ JumpToLayout "floating"),
     (layoutPrefix +> shift "f", withFocused $ windows . sink),
     --

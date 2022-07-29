@@ -20,6 +20,7 @@ import qualified XMonad.StackSet as W
 import XMonad.Util.EZConfig
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.Run (spawnPipe)
+import qualified Data.Map as Map
 
 -- TODO: Autostart after xmonad
 -- TODO: Add server mode (https://gist.github.com/czaplicki/37ab38da4245deaea8c86ceae3ff2fa2)
@@ -80,8 +81,9 @@ getConfig barProc xres =
           handleEventHook = refocusLastWhen refocusPred <+> docksEventHook <+> FS.fullscreenEventHook,
           manageHook = myManageHook,
           layoutHook = refocusLastLayoutHook $ Layouts.layoutHook xres,
-          logHook = refocusLastLogHook <+> logHook
+          logHook = refocusLastLogHook <+> logHook,
+          mouseBindings = \_ -> Map.empty
         }
-        `removeKeysP` ["M-<Return>", "M-p", "M-S-p", "M-S-c"]
+        `removeKeysP` ["M-<Return>", "M-p", "M-S-p", "M-S-c", "M-h", "M-l"]
         `additionalKeysP` keybindings
-        `mouseBindings` mousebindings
+        `additionalMouseBindings` mousebindings
