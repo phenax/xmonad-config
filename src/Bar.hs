@@ -21,6 +21,8 @@ block = wrap "%" "%"
 
 foreground c s = "<fc=" ++ c ++ ">" ++ s ++ "</fc>"
 
+wirelessInterface = "wlp1s0"
+
 -- TODO: Update on signal
 config xres =
   let bg = Theme.background xres
@@ -50,12 +52,12 @@ config xres =
               <==> block "default:Capture" ++ (pad 1 1 . block $ "default:Master")
               .| (pad 1 1 . block $ "bright")
               .| (pad 1 1 . block $ "date")
-              .| (pad 1 1 . block $ "wi")
+              .| (pad 1 1 . block $ wirelessInterface ++ "wi")
               .| (pad 1 3 . block $ "battery"),
           commands =
             [ Run UnsafeStdinReader,
               Run $ Date "\61463  %A, %e %b - %I:%M %p" "date" 50,
-              Run $ Wireless "" ["-t", "Wifi: <ssid>"] 50, -- ++ " <quality>%"
+              Run $ Wireless wirelessInterface ["-t", "\61931  <quality>%"] 100,
               Run $
                 flip Brightness 50 $
                   concat
