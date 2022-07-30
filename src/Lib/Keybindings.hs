@@ -3,20 +3,17 @@ module Lib.Keybindings where
 import qualified Lib.Config as C
 import qualified Lib.Scratchpads as NS
 import Lib.Utils
-import System.Exit (exitSuccess)
 import XMonad
 import XMonad.Actions.CopyWindow (kill1)
 import XMonad.Actions.CycleWS (toggleWS')
+import XMonad.Actions.OnScreen (viewOnScreen)
 import XMonad.Actions.WithAll (killAll)
-import XMonad.Layout.LayoutCombinators (JumpToLayout (..))
 import XMonad.Layout.ResizableTile (MirrorResize (..))
 import XMonad.Layout.SubLayouts (GroupMsg (..), pullGroup)
 import XMonad.Layout.ToggleLayouts (ToggleLayout (..))
 import XMonad.Layout.WindowNavigation (Direction2D (..))
 import XMonad.StackSet (sink)
-import XMonad.Actions.OnScreen (viewOnScreen)
 import qualified XMonad.StackSet as W
-import qualified Lib.Config as C
 
 layoutPrefix = mod' "l"
 
@@ -38,15 +35,8 @@ keybindings =
     (modCtrl "<Delete>", killAll),
     --
     -- Sidekick monitor
-    (mod' ".",
-      do
-        let
-          doIt (Just wid) = windows $ W.view wid
-          doIt Nothing = pure ()
-        screenWorkspace 0 >>= doIt
-    ),
-    (mod' ",", windows (viewOnScreen 1 (C.workspaces !! 8))),
-    -- (mod' ".", windows (viewOnScreen 0 "1")),
+    (mod' ".", screenWorkspace 0 >>= maybe (pure ()) (windows . W.view)),
+    (mod' ",", windows $ viewOnScreen 1 $ workspaceId 9),
     --
     -- Layout
     (mod' "f", sendMessage $ Toggle "monocle"),

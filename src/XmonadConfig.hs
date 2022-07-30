@@ -1,6 +1,8 @@
 module Main (main) where
 
 --import Control.Concurrent (forkIO, threadDelay)
+
+import qualified Data.Map as Map
 import qualified Lib.Config as C
 import Lib.Keybindings (keybindings, mousebindings)
 import qualified Lib.Layouts as Layouts
@@ -16,11 +18,11 @@ import XMonad.Hooks.ManageDocks (docksEventHook, manageDocks)
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.RefocusLast
 import qualified XMonad.Layout.Fullscreen as FS
+import XMonad.Layout.PerWorkspace (onWorkspace)
 import qualified XMonad.StackSet as W
 import XMonad.Util.EZConfig
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.Run (spawnPipe)
-import qualified Data.Map as Map
 
 -- TODO: Autostart after xmonad
 -- TODO: Add server mode (https://gist.github.com/czaplicki/37ab38da4245deaea8c86ceae3ff2fa2)
@@ -31,10 +33,19 @@ main = do
   --spawn "dunst -config ~/.config/dunst/dunstrc"
   --spawn "~/.fehbg"
   -- spawn "~/scripts/battery-watch.sh start"
-  spawn "zsh ~/nixos/scripts/monitor.sh sidekick" -- Configure sidekick monitor
+  spawn "~/nixos/scripts/monitor.sh sidekick" -- Configure sidekick monitor
   spawn "zsh ~/nixos/packages/xmonad/autostart.sh"
   dirs <- getDirectories
   launch (getConfig barProc xres) dirs
+
+onStartup = do
+  empty <- Util.hasWindows $ Util.workspaceId 9
+  if not empty
+    then spawnOn (Util.workspaceId 9) "st -c clock -e tty-clock -t -b -c -s -f '%A, %d %b' -C 5"
+    else pure ()
+
+-- onLayout =
+--   onWorkspace (Util.workspaceId 9) Layouts.monocle
 
 -- Manage hook
 myManageHook =
@@ -82,8 +93,9 @@ getConfig barProc xres =
           manageHook = myManageHook,
           layoutHook = refocusLastLayoutHook $ Layouts.layoutHook xres,
           logHook = refocusLastLogHook <+> logHook,
+          startupHook = startupHook desktopConfig >> onStartup,
           mouseBindings = \_ -> Map.empty
         }
-        `removeKeysP` ["M-<Return>", "M-p", "M-S-p", "M-S-c", "M-h", "M-l"]
+        `removeKeysP` ["M-<Return>", "M-p", "M-S-p", "M-S-c", "M-h", "M-l", "M-,", "M-."]
         `additionalKeysP` keybindings
         `additionalMouseBindings` mousebindings

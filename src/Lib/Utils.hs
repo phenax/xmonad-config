@@ -1,11 +1,12 @@
 module Lib.Utils where
 
-import Data.List (elemIndex)
-import Data.Maybe (fromMaybe)
+import Data.List (elemIndex, find)
+import Data.Maybe (fromMaybe, isJust)
 import qualified Lib.Config as C
 import XMonad
 import XMonad.Hooks.DynamicLog (wrap)
 import XMonad.Layout.Spacing
+import qualified XMonad.StackSet as W
 
 --
 -- Keybinding helpers
@@ -61,3 +62,11 @@ onClick fn ws = "<action=`" ++ fn ws ++ "`>" ++ ws ++ "</action>"
 viewWorkspace ws = "xdotool key super+" ++ show n
   where
     n = (+ 1) . fromMaybe 0 . elemIndex ws $ C.workspaces
+
+workspaceId = (C.workspaces !!) . flip (-) 1
+
+hasWindows :: String -> X Bool
+hasWindows workspaceId = do
+  ws <- gets windowset
+  let workspaceM = find ((== workspaceId) . W.tag) . W.workspaces $ ws
+  pure $ maybe False (isJust . W.stack) workspaceM
