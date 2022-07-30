@@ -11,6 +11,7 @@ import qualified Lib.Theme as Theme
 import Lib.Utils as Util
 import System.IO (hPutStrLn)
 import XMonad
+import XMonad.Actions.OnScreen (viewOnScreen)
 import XMonad.Actions.SpawnOn
 import XMonad.Config.Desktop
 import XMonad.Hooks.DynamicLog
@@ -39,13 +40,21 @@ main = do
   launch (getConfig barProc xres) dirs
 
 onStartup = do
-  empty <- Util.hasWindows $ Util.workspaceId 9
-  if not empty
-    then spawnOn (Util.workspaceId 9) "st -c clock -e tty-clock -t -b -c -s -f '%A, %d %b' -C 5"
+  let sidekick = Util.workspaceId 9
+  let primary = Util.workspaceId 1
+
+  -- Load on second screen
+  empty <- not <$> Util.hasWindows sidekick
+  if empty
+    then spawnOn sidekick "st -c clock -e tty-clock -t -b -c -s -f '%A, %d %b' -C 5"
     else pure ()
 
--- onLayout =
---   onWorkspace (Util.workspaceId 9) Layouts.monocle
+  -- Sidekick on w9 and primary on w1
+  windows $ viewOnScreen 1 sidekick
+  windows $ viewOnScreen 0 primary
+
+onLayout =
+  onWorkspace (Util.workspaceId 9) Layouts.monocle
 
 -- Manage hook
 myManageHook =
