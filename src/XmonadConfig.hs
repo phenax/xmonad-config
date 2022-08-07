@@ -11,6 +11,7 @@ import qualified Lib.Theme as Theme
 import Lib.Utils as Util
 import System.IO (hPutStrLn)
 import XMonad
+import qualified XMonad.Core
 import XMonad.Actions.OnScreen (viewOnScreen)
 import XMonad.Actions.SpawnOn
 import XMonad.Config.Desktop
@@ -30,31 +31,28 @@ import XMonad.Util.Run (spawnPipe)
 main = do
   xres <- runExternal Theme.loadXres
   barProc <- spawnPipe "xmobar"
-  --spawn "~/scripts/bin/with_zsh shotkey"
-  --spawn "dunst -config ~/.config/dunst/dunstrc"
-  --spawn "~/.fehbg"
-  -- spawn "~/scripts/battery-watch.sh start"
-  spawn "~/nixos/scripts/monitor.sh sidekick" -- Configure sidekick monitor
   spawn "zsh ~/nixos/packages/xmonad/autostart.sh"
   dirs <- getDirectories
   launch (getConfig barProc xres) dirs
 
 onStartup = do
+  XMonad.Core.spawn "~/nixos/scripts/monitor.sh sidekick"
+
   let sidekick = Util.workspaceId 9
   let primary = Util.workspaceId 1
 
   -- Load on second screen
   empty <- not <$> Util.hasWindows sidekick
   if empty
-    then spawnOn sidekick "st -c clock -e tty-clock -t -b -c -s -f '%A, %d %b' -C 5"
+    then spawnOn sidekick "sidekick_dashboard"
     else pure ()
 
   -- Sidekick on w9 and primary on w1
   windows $ viewOnScreen 1 sidekick
   windows $ viewOnScreen 0 primary
 
-onLayout =
-  onWorkspace (Util.workspaceId 9) Layouts.monocle
+-- onLayout =
+--   onWorkspace (Util.workspaceId 9) Layouts.monocle
 
 -- Manage hook
 myManageHook =
