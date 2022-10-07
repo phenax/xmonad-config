@@ -72,5 +72,6 @@ keybindings =
   ]
 
 mousebindings =
-  [ ((C.modKey .|. mod1Mask, button1), \w -> focus w >> mouseResizeWindow w)
+  [ ((C.modKey .|. mod1Mask, button1), \w -> focus w >> mouseResizeWindow w >> windows W.shiftMaster)
+  , ((C.modKey .|. controlMask, button1), \w -> focus w >> mouseMoveWindow w >> windows W.shiftMaster)
   ]

@@ -10,7 +10,7 @@ nixpkgs.stdenv.mkDerivation {
 
     # Libs
     libclang
-    alsaLib
+    alsa-lib
     xorg.libXext
     xorg.libXScrnSaver
     xorg.libXinerama
