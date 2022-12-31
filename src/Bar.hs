@@ -27,13 +27,14 @@ wirelessInterface = "wlp1s0"
 config xres =
   let bg = Theme.background xres
       fg = Theme.foreground xres
-      -- faded = Theme.faded xres
-      -- accent = Theme.accent xres
+      accent = Theme.accent xres
       danger = Theme.danger xres
    in defaultConfig
         { font = C.fontBar,
           additionalFonts = C.altFonts,
-          border = NoBorder,
+          border = FullB,
+          borderWidth = 2,
+          borderColor = bg,
           bgColor = bg,
           fgColor = fg,
           alpha = 255,
@@ -76,7 +77,7 @@ config xres =
               Run $
                 flip (Volume "default" "Master") 20 $
                   concat
-                    [ ["-t", "<status> <volume>%"],
+                    [ ["-t", "<status>  <volume>%"],
                       ["--"],
                       ["--on", "\62559"],
                       ["--off", "\61453"]

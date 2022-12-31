@@ -3,13 +3,12 @@ module Lib.Config where
 import XMonad
 
 -- | UI
-fontFamily = "JetBrainsMono Nerd Font"
 
-font = "xft:" ++ fontFamily ++ ":size=8"
+font = "JetBrainsMono Nerd Font" ++ " 8"
 
 fontBar = font
 
-altFonts = ["xft:Font Awesome 5 Free:size=7", "xft:Symbols Nerd Font:size=7"]
+altFonts = ["Font Awesome 5 Free 7", "Symbols Nerd Font 7"]
 
 -- | Keybindings
 modKey = mod4Mask
@@ -28,4 +27,4 @@ borderSize = 3 :: Dimension
 
 gaps = 2 :: Integer
 
-workspaces = ["1", "2", "3", "4", "5", "6: www", "7: meet", "8", "9: notes"]
+workspaces = ["1: main", "2", "3", "4", "5", "6: www", "7", "8", "9: sidekick"]

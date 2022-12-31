@@ -63,9 +63,9 @@ myManageHook =
     <+> manageSpawn
     <+> manageHook desktopConfig
     <+> composeAll
-      [ isDialog --> doCenterFloat,
-        className =? "Pidgin" --> doFloat,
-        className =? "XCalc" --> doFloat
+      [ isDialog --> doCenterFloat >> doRaise,
+        className =? "easyeffects" --> doShift (Util.workspaceId 4),
+        className =? "obs" --> doShift (Util.workspaceId 5)
       ]
 
 getConfig barProc xres =
