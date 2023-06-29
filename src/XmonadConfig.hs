@@ -44,7 +44,7 @@ onStartup = do
   -- Load on second screen
   empty <- not <$> Util.hasWindows sidekick
   if empty
-    then spawnOn sidekick "sidekick_dashboard"
+    then spawnOn sidekick "sidekick-dashboard"
     else pure ()
 
   -- Sidekick on w9 and primary on w1
@@ -98,7 +98,10 @@ getConfig barProc xres =
           -- Hooks
           handleEventHook = refocusLastWhen refocusPred <+> docksEventHook <+> FS.fullscreenEventHook,
           manageHook = myManageHook,
-          layoutHook = refocusLastLayoutHook $ Layouts.layoutHook xres,
+          layoutHook =
+            onWorkspace (Util.workspaceId 9) Layouts.monocle
+              $ refocusLastLayoutHook
+              $ Layouts.layoutHook xres,
           logHook = refocusLastLogHook <+> logHook,
           startupHook = startupHook desktopConfig >> onStartup,
           mouseBindings = \_ -> Map.empty

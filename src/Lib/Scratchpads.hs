@@ -16,6 +16,7 @@ data ReplLang
 data Scratchpad
   = SystemMonitor
   | Notes
+  | Sketchpad
   | Terminal
   | Repl ReplLang
   | Calendar
@@ -49,6 +50,15 @@ scratchpads =
       (Repl Js, "node", Small, "~"),
       (Repl RateSx, "~/scripts/rate-sx.sh", Medium, "~"),
       (Repl Haskell, "ghci", Small, "~")
+    ]
+    ++ map newNS [
+      (Sketchpad,
+      "brave " ++ unwords [
+          "--class=Sketchpad",
+          "--user-data-dir=/tmp/brave-scratchpad-instance/",
+          "--app=https://excalidraw.com/"
+        ],
+      Large)
     ]
 
 scratchpad :: Scratchpad -> X ()

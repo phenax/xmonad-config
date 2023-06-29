@@ -60,10 +60,11 @@ keybindings =
     (mod' "s", NS.scratchpad NS.Calendar),
     (mod' "o", NS.scratchpad NS.SystemMonitor),
     (mod' "n", NS.scratchpad NS.Notes),
-    (mod' "t", NS.scratchpad NS.Terminal),
-    (replPrefix +> "n", NS.scratchpad $ NS.Repl NS.Js),
-    (replPrefix +> "r", NS.scratchpad $ NS.Repl NS.RateSx),
-    (replPrefix +> "h", NS.scratchpad $ NS.Repl NS.Haskell)
+    (mod' "g", NS.scratchpad NS.Sketchpad),
+    (mod' "t", NS.scratchpad NS.Terminal)
+    -- (replPrefix +> "n", NS.scratchpad $ NS.Repl NS.Js),
+    -- (replPrefix +> "r", NS.scratchpad $ NS.Repl NS.RateSx),
+    -- (replPrefix +> "h", NS.scratchpad $ NS.Repl NS.Haskell)
     --
     -- Temporary
     -- (modCtrl "q", io exitSuccess),
