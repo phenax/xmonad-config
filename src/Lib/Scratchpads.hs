@@ -17,6 +17,7 @@ data Scratchpad
   = SystemMonitor
   | Notes
   | Sketchpad
+  | ChatGPT
   | Terminal
   | Repl ReplLang
   | Calendar
@@ -53,12 +54,21 @@ scratchpads =
     ]
     ++ map newNS [
       (Sketchpad,
-      "brave " ++ unwords [
-          "--class=Sketchpad",
-          "--user-data-dir=/tmp/brave-scratchpad-instance/",
-          "--app=https://excalidraw.com/"
-        ],
-      Large)
+        "brave " ++ unwords [
+            "--class=Sketchpad",
+            "--user-data-dir=/tmp/brave-scratchpad-instance/",
+            "--app=https://excalidraw.com/"
+          ],
+        Large
+      ),
+      (ChatGPT,
+        "brave " ++ unwords [
+            "--class=ChatGPT",
+            "--user-data-dir=/tmp/brave-scratchpad-instance-chatgpt/",
+            "--app=https://chat.openai.com/"
+          ],
+        Large
+      )
     ]
 
 scratchpad :: Scratchpad -> X ()
